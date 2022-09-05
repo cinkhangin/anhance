@@ -8,6 +8,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val i : Int = "1".toSafeInt()
+        val i : Int = "1".toSafeInt()
+        val s = Text.tolowerCase()
     }
 }
