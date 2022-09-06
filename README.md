@@ -2,6 +2,8 @@
 
 An Android library to make life easier.
 
+This Library has many useful Functions to solve problems easier and faster.
+
 ## About
 
 Use `TimeUtil` to format time.
