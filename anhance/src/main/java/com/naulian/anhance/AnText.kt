@@ -1,5 +1,5 @@
 package com.naulian.anhance
 
-object Text {
+object AnText {
     fun tolowerCase() = ""
 }

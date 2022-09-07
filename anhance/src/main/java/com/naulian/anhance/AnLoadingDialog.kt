@@ -5,10 +5,10 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-object LoadingDialog {
+object AnLoadingDialog {
     private var dialog: AlertDialog? = null
 
-    fun show(context: Context, message : String = "Please wait...") {
+    fun show(context: Context, message : String) {
         val progress = ProgressBar(context)
         dialog = MaterialAlertDialogBuilder(context)
             .setView(progress)

@@ -4,8 +4,8 @@ import android.util.Log
 import kotlinx.datetime.*
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-object TimeUtil {
-    private const val TAG = "ClockUtil"
+object AnDateTime {
+    private const val TAG = "AnDateTime"
     const val YEAR: Long = 217_728_000_000L
     const val MONTH: Long = 18_144_000_000L
     const val WEEK: Long = 604_800_800L

@@ -2,6 +2,7 @@ package com.naulian.anhance
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -9,6 +10,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val i : Int = "1".toSafeInt()
-        val s = Text.tolowerCase()
+        Log.i("MainActivity", "onCreate: $i")
     }
 }
