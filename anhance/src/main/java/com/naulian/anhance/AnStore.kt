@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 private val Context.dataStore by preferencesDataStore(name = "preferences")
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class DataStore(val context: Context) {
+class AnStore(val context: Context) {
 
     suspend fun readBoolean(key: String): Boolean {
         return booleanPreferenceFlow(key).first()

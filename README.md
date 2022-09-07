@@ -4,11 +4,50 @@ An Android library to make life easier.
 
 This Library has many useful Functions to solve problems easier and faster.
 
-## About
+## Fetures
+### AnActivity for Activity extensions
+```kotlin
+class MainActivity : AppCompatActivity{
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-Use `TimeUtil` to format time.
+        showToast("hi mom!")
+    }
+}
+```
 
-### safely convert string into int
+### AnContext for Context extensions
+```kotlin
+context.showToast("hi mom!")
+```
+
+### AnFragment for Fragment extensions
+```kotlin
+class MainFragment : Fragment(R.layout.fragment_main) {
+    private var viewBinding: FragmentMainBinding? = null
+    private val binding get() = viewBinding!!
+    
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewBinding = FragmentMainBinding.bind(view)
+        
+        showToast("hi mom!")
+    }
+}
+```
+## AnStore for easy DataStore Setup
+
+```kotlin
+//inside coroutine scope
+val int = AnStore(context).readInt("level", 0)
+```
+
+### AnDateTime for DateTime utils
+
+Use `AnDateTime` to for DateTime utils.
+
+### AnString for String extensions
 
 use String extension function `toSafeInt` 
 
@@ -16,6 +55,8 @@ use String extension function `toSafeInt`
 val a = "100".toSafeInt() //100
 val b = "abc".toSafeInt() //0
 ```
+
+### AnText for Text utils
 
 ## Implementation
 ### Gradle
@@ -31,15 +72,12 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-  implementation 'com.github.cinkhangin:anhance:0.0.3-beta'
+  implementation 'com.github.cinkhangin:anhance:0.0.5-beta'
 }
 ```
-
-- To use the library in a single-platform project, add a dependency to the dependencies block.
-
 ```groovy
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.0.3-beta")
+    implementation("com.github.cinkhangin:anhance:0.0.5-beta")
 }
 ```
 
