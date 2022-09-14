@@ -10,7 +10,8 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val now = AnDateTime.now()
+        val threeMinutes = 3.min
+        val OneHundredYears = 100.year
 
     }
 }
