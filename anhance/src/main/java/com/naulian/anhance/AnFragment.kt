@@ -11,12 +11,22 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-fun Fragment.repeatOnLifeCycleScope(actionBlock: (scope: CoroutineScope) -> Unit) {
+fun Fragment.repeatOnLifeCycleScope(block: (scope : CoroutineScope) -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            actionBlock(this)
+            block(this)
+        }
+    }
+}
+
+fun Fragment.requireCoroutineScope(block: suspend CoroutineScope.() -> Unit) {
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            block(this@repeatOnLifecycle)
         }
     }
 }

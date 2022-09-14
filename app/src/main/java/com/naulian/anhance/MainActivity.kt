@@ -2,14 +2,15 @@ package com.naulian.anhance
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import com.naulian.anhance.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val i : Int = "1".toSafeInt()
-        Log.i("MainActivity", "onCreate: $i")
+        val now = AnDateTime.now()
+
     }
 }

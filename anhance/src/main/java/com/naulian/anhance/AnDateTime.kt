@@ -14,23 +14,29 @@ object AnDateTime {
     const val MINUTE: Long = 60_000L
     const val SECOND: Long =  1000L
 
+    //geting a system Clock
     val systemClock get() = Clock.System
+
+    //getting an Instant
     val now get() = systemClock.now()
     val timeZone get() = TimeZone.currentSystemDefault()
     val localDate = systemClock.todayIn(timeZone)
     val localDateTime = now.toLocalDateTime(timeZone)
-
     val dayOfMonth get() = localDate.dayOfMonth
     val monthOfYear get() = localDate.monthNumber
     val year get() = localDate.year
-
     val todayString get() = "$dayOfMonth$monthOfYear$year"
     val todayFormatted get() = "$dayOfMonth/$monthOfYear/$year"
-
     val todayInt get() = "$year${withZero(monthOfYear)}${withZero(dayOfMonth)}".toSafeInt()
-
     val millisNow get() = now.toEpochMilliseconds()
 
+    @Deprecated(
+        message = "There is a better way to do this",
+        replaceWith = ReplaceWith(
+            expression = "use property access syntax 'millisNow'"
+        ),
+        level = DeprecationLevel.WARNING
+    )
     fun now(): Long {
         return Clock.System.now().toEpochMilliseconds()
     }
@@ -97,7 +103,7 @@ object AnDateTime {
     }
 
     fun formatAgo(millis: Long): String {
-        val ago = now() - millis
+        val ago = millisNow - millis
         var stringAgo = "Now"
         when {
             ago > YEAR -> stringAgo = "${ago / YEAR}y"
@@ -185,6 +191,34 @@ object AnDateTime {
     }
 
     fun years(count: Long): Long {
+        return YEAR * count
+    }
+
+    fun seconds(count: Int): Long {
+        return SECOND * count
+    }
+
+    fun minutes(count: Int): Long {
+        return MINUTE * count
+    }
+
+    fun hours(count: Int): Long {
+        return HOUR * count
+    }
+
+    fun days(count: Int): Long {
+        return DAY * count
+    }
+
+    fun weeks(count: Int): Long {
+        return WEEK * count
+    }
+
+    fun months(count: Int): Long {
+        return MONTH * count
+    }
+
+    fun years(count: Int): Long {
         return YEAR * count
     }
 

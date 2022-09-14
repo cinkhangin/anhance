@@ -17,6 +17,12 @@ class MainActivity : AppCompatActivity{
 }
 ```
 
+### `AnClock` for better looking Code for time
+```kotlin
+val threeMinutes = 3.min
+val oneHundredYears = 100.year
+```
+
 ### `AnContext` for Context extensions
 ```kotlin
 context.showToast("hi mom!")
