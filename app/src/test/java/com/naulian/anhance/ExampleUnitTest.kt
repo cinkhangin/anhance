@@ -3,6 +3,7 @@ package com.naulian.anhance
 import org.junit.Test
 
 import org.junit.Assert.*
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -11,7 +12,9 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun test(){
+        assertEquals(3 , 3001L.toSecond)
+        assertEquals(0 , 0L.toSecond)
     }
+
 }
