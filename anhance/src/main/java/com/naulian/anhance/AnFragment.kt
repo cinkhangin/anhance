@@ -2,11 +2,17 @@
 
 package com.naulian.anhance
 
+import android.content.res.Configuration
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.naulian.anhance.objects.AnLoadingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -58,3 +64,31 @@ fun Fragment.showLoadingDialog(message: String = "Please wait") {
 fun Fragment.dismissLoadingDialog() {
     AnLoadingDialog.dismiss()
 }
+
+fun Fragment.createLinearLayoutManager(
+    vertical: Boolean = true,
+    reverse: Boolean = false
+): LinearLayoutManager {
+    val orientation = if (vertical) RecyclerView.VERTICAL
+    else RecyclerView.HORIZONTAL
+    return LinearLayoutManager(requireContext(), orientation, reverse)
+}
+
+val Fragment.configuration get() : Configuration = resources.configuration
+val Fragment.orientation get() = configuration.orientation
+val Fragment.isLandscape get() = orientation == Configuration.ORIENTATION_LANDSCAPE
+fun Fragment.createGridLayoutManager(defaultSpan: Int, otherSpan: Int): GridLayoutManager {
+    val spanCount = if (isLandscape) otherSpan else defaultSpan
+    return GridLayoutManager(requireContext(), spanCount)
+}
+
+val Fragment.navigationGraph get() = findNavController().graph
+fun Fragment.navigateTo(direction: Int) {
+    findNavController().navigate(direction)
+}
+
+fun Fragment.updateStartDestination(id : Int){
+    if(navigationGraph.startDestinationId == id) return
+    else navigationGraph.setStartDestination(id)
+}
+

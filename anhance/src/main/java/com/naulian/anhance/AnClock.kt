@@ -2,6 +2,10 @@
 
 package com.naulian.anhance
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,6 +21,7 @@ const val MILLI : Long = 1L
 
 //get current millis
 val millisNow get() = System.currentTimeMillis()
+val millisOfNow get() = millisNow
 
 //make units 3.sec == 3000 == 3 * SECOND
 val Int.sec get() = SECOND * this
@@ -58,6 +63,15 @@ val Long.toDayString get() = if (this == 0L) "" else "${this}d "
 val Long.toYearString get() = if (this == 0L) "" else "${this}y"
 val Int.to0String get() = if (this < 10) "0$this" else "$this"
 val Long.to0String get() = if (this < 10) "0$this" else "$this"
+
+private val systemClock get() = Clock.System
+private val now get() = systemClock.now()
+private val timeZone get() = TimeZone.currentSystemDefault()
+private val localDate = systemClock.todayIn(timeZone)
+private val localDateTime = now.toLocalDateTime(timeZone)
+val intOfDay get() = localDate.dayOfMonth
+val intOfMonth get() = localDate.monthNumber
+val intOfYear get() = localDate.year
 
 fun Long.formatWith(pattern : String) : String{
     return SimpleDateFormat(pattern, Locale.getDefault()).format(this)
