@@ -5,43 +5,44 @@ An Android library to make life easier.
 This Library has many useful Functions to solve problems easier and faster.
 
 ## Fetures
-### `AnActivity` for Activity extensions
-```kotlin
-class MainActivity : AppCompatActivity{
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+### Activity extensions
 
-        showToast("hi mom!")
-    }
-}
+```kotlin
+showToast("hi mom!") //show a toast
+showKeyboard() //show the keyboard
+hideKeyboard() //hide the keyboard
 ```
 
-### `AnClock` for better looking Code for time
+### Extensions for Date and time
 ```kotlin
-val threeMinutes = 3.min
-val oneHundredYears = 100.year
+val threeSeconds = 3.sec  // 3000L
+val three = threeSeconds.toSecond // 3L
+val currentMillis = millisNow //Current millisecond
+val date = millisNow.formatWith("dd/MM/yyyy") //format date
 ```
 
-### `AnContext` for Context extensions
+### Context extensions
 ```kotlin
 context.showToast("hi mom!")
+context.isInternetAvailable //check connection
 ```
 
-### `AnFragment` for Fragment extensions
-
+### Extensions for dimensions
 ```kotlin
-class MainFragment : Fragment(R.layout.fragment_main) {
-    private var viewBinding: FragmentMainBinding? = null
-    private val binding get() = viewBinding!!
-    
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewBinding = FragmentMainBinding.bind(view)
-        
-        showToast("hi mom!")
-    }
-}
+val padding = 16.toPx //convert 12dp to px
+val margin = 24.toDp //convert 24px to dp
+```
+
+### Fragment extensions
+```kotlin
+showToast("hi mom!")
+setStatusBarColorResource(R.color.primary) //change status bar's color
+val color = getColor(R.color.primary) //change resource color into color
+setStatusBarColor(color) //change status bar's color
+showKeyboard() //show keyboard
+hideKeyboard() //hide keyboard
+showLoadingDialog("Loading...") //show a loading dialog
+dismissLoadingDialog() //dismiss the loading dialog
 ```
 
 ### `AnStore` for easy DataStore Setup
@@ -51,20 +52,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 val int = AnStore(context).readInt("level", 0)
 ```
 
-### `AnDateTime` for DateTime utils
-
-Use `AnDateTime` to for DateTime utils.
-
-### `AnString` for String extensions
-
-use String extension function `toSafeInt` 
-
+### String extensions
 ```kotlin
-val a = "100".toSafeInt() //100
+val a = "100".toSafeInt() //100 safely convert string into int
 val b = "abc".toSafeInt() //0
+"hello mom".copy() //copy the string to clipboard
+"<font color=#ff0000>red</font>".toHtml() //string into html
 ```
-
-### `AnText` for Text utils
 
 ## Implementation
 ### Gradle

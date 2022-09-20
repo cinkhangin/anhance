@@ -13,8 +13,9 @@ fun String.toSafeInt() =
 fun String.toHtml() =
     HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
-val String.clipData get() : ClipData =
+private val String.clipData get() : ClipData =
     ClipData.newPlainText("clip", this)
+
 fun String.copy(context: Context) {
     context.clipboardManager.setPrimaryClip(this.clipData)
     context.showToast(this)

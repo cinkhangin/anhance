@@ -11,13 +11,13 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val a = 1.year + 3.day + 4.hr + 5.sec
-
-        val b = a.toDay
-        val c = a.safeToDivide / MINUTE
-
-        val d = a.formatTimer()
-        Log.i("MainActivity", "onCreate: $d")
+        binding.apply {
+            btnMain.setOnClickListener {
+                if(isInternetAvailable){
+                    txtMain.text = "connected"
+                }else txtMain.text = "disconnected"
+            }
+        }
 
     }
 }

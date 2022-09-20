@@ -2,9 +2,6 @@
 
 package com.naulian.anhance
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -13,7 +10,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-fun Fragment.repeatOnLifeCycleScope(block: (scope : CoroutineScope) -> Unit) {
+val Fragment.isInternetAvailable get() = requireContext().isInternetAvailable
+
+fun Fragment.repeatOnLifeCycleScope(block: (scope: CoroutineScope) -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             block(this)
@@ -21,7 +20,7 @@ fun Fragment.repeatOnLifeCycleScope(block: (scope : CoroutineScope) -> Unit) {
     }
 }
 
-fun Fragment.requireCoroutineScope(block: suspend CoroutineScope.() -> Unit) {
+fun Fragment.fragmentOnStartScope(block: suspend CoroutineScope.() -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             block(this@repeatOnLifecycle)
@@ -33,32 +32,16 @@ fun Fragment.showToast(message: String) {
     showTextToast(requireContext(), message)
 }
 
-private fun Fragment.setStatusBarColor(color: Int) {
+fun Fragment.setStatusBarColor(color: Int) {
     requireActivity().window.statusBarColor = color
 }
 
-fun Fragment.setStatusBarColorResource(colorRes: Int) {
-    val color = ContextCompat.getColor(requireContext(), colorRes)
-    setStatusBarColor(color)
+fun Fragment.setStatusBarColorResource(resId: Int) {
+    setStatusBarColor(getColor(resId))
 }
 
-fun Fragment.restoreStatusBarColor(colorId: Int) {
-    setStatusBarColorResource(colorId)
-}
-
-fun Fragment.isInternetAvailable(): Boolean {
-    val connectivityManager = requireContext()
-        .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    val capabilities = connectivityManager
-        .getNetworkCapabilities(connectivityManager.activeNetwork)
-
-    capabilities?.let {
-        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-    }
-    return false
+fun Fragment.restoreStatusBarColor(resId: Int) {
+    setStatusBarColorResource(resId)
 }
 
 fun Fragment.getColor(resId: Int): Int {
