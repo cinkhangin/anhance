@@ -17,7 +17,7 @@ const val DAY: Long = 86_400_000L
 const val HOUR: Long = 3_600_000L
 const val MINUTE: Long = 60_000L
 const val SECOND: Long = 1000L
-const val MILLI : Long = 1L
+const val MILLI: Long = 1L
 
 //get current millis
 val millisNow get() = System.currentTimeMillis()
@@ -73,7 +73,11 @@ val intOfDay get() = localDate.dayOfMonth
 val intOfMonth get() = localDate.monthNumber
 val intOfYear get() = localDate.year
 
-fun Long.formatWith(pattern : String) : String{
+val Long.timeLeft get() = if (this < millisNow) 0L else this - millisNow
+val Long.isTimeLeft get() = this.timeLeft > 0
+val Long.timeGap get() = millisNow - this
+
+fun Long.formatWith(pattern: String): String {
     return SimpleDateFormat(pattern, Locale.getDefault()).format(this)
 }
 
@@ -91,6 +95,23 @@ fun Long.formatAgo(): String {
     }
 }
 
+fun Long.formatLeft(withSec: Boolean = true): String {
+    val sec = this.leftSecond
+    val min = this.leftMinute
+    val hr = this.leftHour
+    val day = this.leftDay
+    val year = this.leftYear
+
+    val secString = if (sec > 0) "${sec}s" else ""
+    val minString = if (min > 0) "${min}m" else ""
+    val hrString = if (hr > 0) "${hr}h" else ""
+    val dayString = if (day > 0) "${day}d" else ""
+    val yearString = if (year > 0) "${year}y" else ""
+
+    return if (withSec) "$yearString$dayString$hrString$minString$secString"
+    else "$yearString$dayString$hrString$minString"
+}
+
 //format examples : 00:33 , 01:16 , 4d 01:35:00
 fun Long.formatTimer(): String {
     val secString = this.leftSecond.toClockString
@@ -104,4 +125,34 @@ fun Long.formatTimer(): String {
     return rawTimeString.removePrefix(" 00:")
         .removePrefix("00:")
 }
+
+fun Long.formatClock(): String {
+    val secString = this.leftSecond.toClockString
+    val minString = this.leftMinute.toClockString
+    val hrString = this.leftHour.toClockString
+    val dayString = this.leftDay.toDayString
+    val yearString = this.leftYear.toYearString
+
+    val timeString = "$yearString $dayString $hrString $minString $secString"
+    val timeArray = timeString.split(" ")
+
+    return "${timeArray[0]}${timeArray[1]}"
+}
+
+fun Long.formatDuration(): String {
+    val units = arrayListOf(
+        "${this.leftYear}y",
+        "${this.leftDay}d",
+        "${this.leftHour}hr",
+        "${this.leftMinute}m",
+        "${this.leftSecond}s",
+    )
+    var output = ""
+    for(unitString in units) {
+        if(unitString.startsWith("0")) continue
+        output+=" $unitString"
+    }
+    return output
+}
+
 

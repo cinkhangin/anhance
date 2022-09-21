@@ -18,7 +18,5 @@ import org.junit.Assert.*
 class ExampleInstrumentedTest {
     @Test
     fun test() {
-        val a = millisNow.formatWith("dd")
-        assertEquals("20", a)
     }
 }

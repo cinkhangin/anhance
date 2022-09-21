@@ -12,6 +12,6 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun anhanceTest() {
-        assertEquals(4, 2 + 2)
+
     }
 }

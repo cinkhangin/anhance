@@ -2,6 +2,7 @@
 
 package com.naulian.anhance
 
+import android.content.Context
 import android.content.res.Configuration
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.naulian.anhance.objects.AnLoadingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -65,13 +67,15 @@ fun Fragment.dismissLoadingDialog() {
     AnLoadingDialog.dismiss()
 }
 
-fun Fragment.createLinearLayoutManager(
+fun Fragment.createLLManager(
     vertical: Boolean = true,
-    reverse: Boolean = false
+    reverse: Boolean = false,
+    fromEnd: Boolean = false
 ): LinearLayoutManager {
     val orientation = if (vertical) RecyclerView.VERTICAL
     else RecyclerView.HORIZONTAL
     return LinearLayoutManager(requireContext(), orientation, reverse)
+        .apply { stackFromEnd = fromEnd }
 }
 
 val Fragment.configuration get() : Configuration = resources.configuration
@@ -87,8 +91,22 @@ fun Fragment.navigateTo(direction: Int) {
     findNavController().navigate(direction)
 }
 
-fun Fragment.updateStartDestination(id : Int){
-    if(navigationGraph.startDestinationId == id) return
+fun Fragment.updateStartDestination(id: Int) {
+    if (navigationGraph.startDestinationId == id) return
     else navigationGraph.setStartDestination(id)
+}
+
+fun Fragment.copyString(string : String){
+    string.copy(requireContext())
+}
+
+inline fun Fragment.initialize(block : (context : Context) -> Unit){
+    block(requireContext())
+}
+inline fun Fragment.loadUi(binding : ViewBinding, block: ViewBinding.() -> Unit){
+    binding.apply { block(this) }
+}
+fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit){
+    fragmentOnStartScope { block(this) }
 }
 
