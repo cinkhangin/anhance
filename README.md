@@ -56,7 +56,7 @@ val int = AnStore(context).readInt("level", 0)
 ```kotlin
 val a = "100".toSafeInt() //100 safely convert string into int
 val b = "abc".toSafeInt() //0
-"hello mom".copy() //copy the string to clipboard
+"hello mom".copy(context) //copy the string to clipboard
 "<font color=#ff0000>red</font>".toHtml() //string into html
 ```
 
@@ -65,7 +65,7 @@ val b = "abc".toSafeInt() //0
 
 - Add the Jitpack repository :
 
-```kotlin
+```groovy
 repositories {
   maven { url 'https://jitpack.io' }
 }
@@ -74,12 +74,7 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-  implementation 'com.github.cinkhangin:anhance:0.0.7-beta'
-}
-```
-```groovy
-dependencies {
-    implementation("com.github.cinkhangin:anhance:0.0.7-beta")
+    implementation("com.github.cinkhangin:anhance:0.0.9-beta")
 }
 ```
 
@@ -88,16 +83,18 @@ dependencies {
 Add a dependency to the `<dependencies>` element. Note that you need to use the platform-specific `-jvm` artifact in Maven.
 
 ```xml
+
 <repositories>
   <repository>
     <id>jitpack.io</id>
     <url>https://jitpack.io</url>
   </repository>
 </repositories>
-
+```
+```xml
 <dependency>
   <groupId>com.github.cinkhangin</groupId>
   <artifactId>anhance</artifactId>
-  <version>0.0.7-beta</version>
+  <version>0.0.9-beta</version>
 </dependency>
 ```

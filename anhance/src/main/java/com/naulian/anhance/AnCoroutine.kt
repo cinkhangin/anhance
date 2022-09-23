@@ -11,3 +11,7 @@ fun <T> Flow<T>.onEachLaunchIn(scope: CoroutineScope, action: suspend (T) -> Uni
     this.onEach { action(it) }.launchIn(scope)
 }
 
+fun <T> CoroutineScope.onEachLaunch(data : Flow<T>, action: suspend (T) -> Unit){
+    data.onEachLaunchIn(this){ action(it) }
+}
+

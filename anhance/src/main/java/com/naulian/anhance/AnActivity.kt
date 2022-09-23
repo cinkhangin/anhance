@@ -16,3 +16,4 @@ fun Activity.showKeyboard() =
 fun Activity.hideKeyboard() =
     WindowInsetsControllerCompat(window, window.decorView)
         .hide(WindowInsetsCompat.Type.ime())
+

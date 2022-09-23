@@ -1,4 +1,4 @@
-package com.naulian.anhance
+package com.naulian.anhance.objects
 
 import android.content.Context
 import androidx.datastore.preferences.core.*
@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-private val Context.dataStore by preferencesDataStore(name = "preferences")
+private val Context.dataStore by preferencesDataStore(name = "dataStore")
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 class AnStore(val context: Context) {
 
-    suspend fun readBoolean(key: String): Boolean {
-        return booleanPreferenceFlow(key).first()
+    suspend fun readBoolean(key: String, defValue: Boolean): Boolean {
+        return booleanPreferenceFlow(key, defValue).first()
     }
 
     suspend fun writeBoolean(key: String, value: Boolean) {
@@ -52,15 +52,25 @@ class AnStore(val context: Context) {
         }
     }
 
+    suspend fun readFloat(key: String, defValue: Float): Float {
+        return floatPreferenceFlow(key, defValue).first()
+    }
+
+    suspend fun writeFloat(key: String, value: Float) {
+        context.dataStore.edit {
+            it[floatPreferencesKey(key)] = value
+        }
+    }
+
     fun stringPreferenceFlow(key: String, defValue: String): Flow<String> {
         return context.dataStore.data.map {
             it[stringPreferencesKey(key)] ?: defValue
         }
     }
 
-    fun booleanPreferenceFlow(key: String): Flow<Boolean> {
+    fun booleanPreferenceFlow(key: String, defValue: Boolean): Flow<Boolean> {
         return context.dataStore.data.map {
-            it[booleanPreferencesKey(key)] ?: true
+            it[booleanPreferencesKey(key)] ?: defValue
         }
     }
 
@@ -72,5 +82,10 @@ class AnStore(val context: Context) {
     fun longPreferenceFlow(key: String, defValue: Long) =
         context.dataStore.data.map {
             it[longPreferencesKey(key)] ?: defValue
+        }
+
+    fun floatPreferenceFlow(key: String, defValue: Float) =
+        context.dataStore.data.map {
+            it[floatPreferencesKey(key)] ?: defValue
         }
 }

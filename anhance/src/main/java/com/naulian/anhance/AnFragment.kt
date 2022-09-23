@@ -2,8 +2,13 @@
 
 package com.naulian.anhance
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -15,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.naulian.anhance.objects.AnLoadingDialog
+import com.naulian.anhance.objects.AnPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -110,3 +116,20 @@ fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit){
     fragmentOnStartScope { block(this) }
 }
 
+fun Fragment.openGallery(block : (uri : Uri?) -> Unit) {
+    val action = ActivityResultContracts.StartActivityForResult()
+    val forResult = registerForActivityResult(action) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let { block(it.data) }
+        }
+    }
+    launchDeviceGallery(forResult)
+}
+
+private fun Fragment.launchDeviceGallery(forResult : ActivityResultLauncher<Intent>){
+    if (requireActivity().askForPermission(AnPermission.READ_STORAGE)) {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        forResult.launch(intent)
+    }
+}
