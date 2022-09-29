@@ -62,3 +62,17 @@ dependencies {
     //datetime
     implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.cinkhangin'
+                artifactId = 'anchance'
+                version = '0.0.12-beta'
+            }
+        }
+    }
+}

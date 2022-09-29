@@ -18,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.naulian.anhance.objects.AnLoadingDialog
 import com.naulian.anhance.objects.AnPermission
 import kotlinx.coroutines.CoroutineScope
@@ -109,7 +108,7 @@ fun Fragment.copyString(string : String){
 inline fun Fragment.initialize(block : (context : Context) -> Unit){
     block(requireContext())
 }
-inline fun Fragment.loadUi(binding : ViewBinding, block: ViewBinding.() -> Unit){
+inline fun <T> Fragment.loadUi(binding : T, block: T.() -> Unit){
     binding.apply { block(this) }
 }
 fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit){
