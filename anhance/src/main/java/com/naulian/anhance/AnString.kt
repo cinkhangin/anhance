@@ -10,8 +10,9 @@ import com.naulian.anhance.objects.AnText
 fun String.toSafeInt() =
     if (this.isDigitsOnly()) this.toInt() else 0
 
-private val String.clipData get() : ClipData =
-    ClipData.newPlainText("clip", this)
+private val String.clipData
+    get() : ClipData =
+        ClipData.newPlainText("clip", this)
 
 fun String.copy(context: Context) {
     context.clipboardManager.setPrimaryClip(this.clipData)
@@ -19,3 +20,4 @@ fun String.copy(context: Context) {
 }
 
 fun String.censor() = AnText.censor(this)
+fun String.generateMore() = AnText.generateRandomString(this)

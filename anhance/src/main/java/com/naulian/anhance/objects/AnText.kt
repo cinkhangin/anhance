@@ -1,6 +1,12 @@
 package com.naulian.anhance.objects
 
+import com.naulian.anhance.random
+
 object AnText {
+    private const val LOWERCASES = "abcdefghijklmnopqrstuvwxyz"
+    private const val UPPERCASES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    private const val DECIMALS = "0123456789"
+
     private val stars = hashMapOf(
         3 to "***",
         4 to "****",
@@ -25,6 +31,27 @@ object AnText {
                 output = output.replace(word, star)
             }
         }
+        return output
+    }
+
+    fun generateRandomString(example: String): String {
+        if (example.isEmpty()) return "ooh!oh!"
+
+        var raw = ""
+        var output = ""
+        example.forEach {
+            if (LOWERCASES.contains(it, false)){
+                raw += LOWERCASES
+            }
+            if (UPPERCASES.contains(it, false)) raw += UPPERCASES
+            if (DECIMALS.contains(it, false)) raw += DECIMALS
+        }
+
+        repeat(example.length) {
+            val rndIndex = raw.length.random
+            output += raw.elementAt(rndIndex)
+        }
+
         return output
     }
 

@@ -57,6 +57,12 @@ val Long.leftHour get() = this.toHour % 24
 val Long.leftDay get() = this.toDay % 365
 val Long.leftYear get() = this.toYear
 
+private val Long.secondOrEmpty get() = if (this > 0) "${this}s" else ""
+private val Long.minuteOrEmpty get() = if (this > 0) "${this}m" else ""
+private val Long.hourOrEmpty get() = if (this > 0) "${this}h" else ""
+private val Long.dayOrEmpty get() = if (this > 0) "${this}ds" else ""
+private val Long.yearOrEmpty get() = if (this > 0) "${this}y" else ""
+
 // 3y10d 04:35:07
 val Long.toClockString get() = if (this == 0L) "00" else this.to0String
 val Long.toDayString get() = if (this == 0L) "" else "${this}d "
@@ -69,6 +75,7 @@ private val now get() = systemClock.now()
 private val timeZone get() = TimeZone.currentSystemDefault()
 private val localDate = systemClock.todayIn(timeZone)
 private val localDateTime = now.toLocalDateTime(timeZone)
+
 val intOfDay get() = localDate.dayOfMonth
 val intOfMonth get() = localDate.monthNumber
 val intOfYear get() = localDate.year
@@ -96,20 +103,13 @@ fun Long.formatAgo(): String {
 }
 
 fun Long.formatLeft(withSec: Boolean = true): String {
-    val sec = this.leftSecond
-    val min = this.leftMinute
-    val hr = this.leftHour
-    val day = this.leftDay
-    val year = this.leftYear
-
-    val secString = if (sec > 0) "${sec}s" else ""
-    val minString = if (min > 0) "${min}m" else ""
-    val hrString = if (hr > 0) "${hr}h" else ""
-    val dayString = if (day > 0) "${day}d" else ""
-    val yearString = if (year > 0) "${year}y" else ""
-
-    return if (withSec) "$yearString$dayString$hrString$minString$secString"
-    else "$yearString$dayString$hrString$minString"
+    val sec = this.leftSecond.secondOrEmpty
+    val min = this.leftMinute.minuteOrEmpty
+    val hr = this.leftHour.hourOrEmpty
+    val day = this.leftDay.dayOrEmpty
+    val year = this.leftYear.yearOrEmpty
+    return if (withSec) "$year$day$hr$min$sec".trimMargin()
+    else "$year$day$hr$min"
 }
 
 //format examples : 00:33 , 01:16 , 4d 01:35:00
@@ -148,9 +148,9 @@ fun Long.formatDuration(): String {
         "${this.leftSecond}s",
     )
     var output = ""
-    for(unitString in units) {
-        if(unitString.startsWith("0")) continue
-        output+=" $unitString"
+    for (unitString in units) {
+        if (unitString.startsWith("0")) continue
+        output += " $unitString"
     }
     return output
 }
