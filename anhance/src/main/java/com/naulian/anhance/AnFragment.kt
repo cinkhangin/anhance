@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,14 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 val Fragment.isInternetAvailable get() = requireContext().isInternetAvailable
-
-fun Fragment.repeatOnLifeCycleScope(block: (scope: CoroutineScope) -> Unit) {
-    viewLifecycleOwner.lifecycleScope.launch {
-        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            block(this)
-        }
-    }
-}
 
 fun Fragment.fragmentOnStartScope(block: suspend CoroutineScope.() -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
@@ -91,9 +84,16 @@ fun Fragment.createGridLayoutManager(defaultSpan: Int, otherSpan: Int): GridLayo
     return GridLayoutManager(requireContext(), spanCount)
 }
 
+//navigation
 val Fragment.navigationGraph get() = findNavController().graph
-fun Fragment.navigateTo(direction: Int) {
+fun Fragment.navigateTo(direction: NavDirections) {
     findNavController().navigate(direction)
+}
+fun Fragment.navigateTo(actionId: Int) {
+    findNavController().navigate(actionId)
+}
+fun Fragment.popBackStack(){
+    findNavController().popBackStack()
 }
 
 fun Fragment.updateStartDestination(id: Int) {
@@ -101,21 +101,26 @@ fun Fragment.updateStartDestination(id: Int) {
     else navigationGraph.setStartDestination(id)
 }
 
-fun Fragment.copyString(string : String){
+//String
+fun Fragment.copyString(string: String) {
     string.copy(requireContext())
 }
 
-inline fun Fragment.initialize(block : (context : Context) -> Unit){
+//Architecture
+inline fun Fragment.initialize(block: Context.() -> Unit) {
     block(requireContext())
 }
-inline fun <T> Fragment.loadUi(binding : T, block: T.() -> Unit){
+
+inline fun <T> Fragment.loadUi(binding: T, block: T.() -> Unit) {
     binding.apply { block(this) }
 }
-fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit){
+
+fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit) {
     fragmentOnStartScope { block(this) }
 }
 
-fun Fragment.openGallery(block : (uri : Uri?) -> Unit) {
+//Tools
+fun Fragment.openGallery(block: (uri: Uri?) -> Unit) {
     val action = ActivityResultContracts.StartActivityForResult()
     val forResult = registerForActivityResult(action) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -125,7 +130,7 @@ fun Fragment.openGallery(block : (uri : Uri?) -> Unit) {
     launchDeviceGallery(forResult)
 }
 
-private fun Fragment.launchDeviceGallery(forResult : ActivityResultLauncher<Intent>){
+private fun Fragment.launchDeviceGallery(forResult: ActivityResultLauncher<Intent>) {
     if (requireActivity().askForPermission(AnPermission.READ_STORAGE)) {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"

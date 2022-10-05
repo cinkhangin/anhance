@@ -11,10 +11,12 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.apply {
             btnMain.setOnClickListener {
-                val text = "1234aa".generateMore()
+                val value = loopForValue(0 until 10, 0) { index, value ->
+                    value + index
+                }
+                val text = loopForString(0 until 10) { "$it = $value, " }
                 txtMain.text = text
             }
         }

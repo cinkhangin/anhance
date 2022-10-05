@@ -7,8 +7,7 @@ import android.content.Context
 import androidx.core.text.isDigitsOnly
 import com.naulian.anhance.objects.AnText
 
-fun String.toSafeInt() =
-    if (this.isDigitsOnly()) this.toInt() else 0
+fun String.toSafeInt() = if (this.isDigitsOnly()) this.toInt() else 0
 
 private val String.clipData
     get() : ClipData =

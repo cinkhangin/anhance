@@ -74,7 +74,7 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.0.9-beta")
+    implementation("com.github.cinkhangin:anhance:0.0.13-beta")
 }
 ```
 
@@ -95,6 +95,6 @@ Add a dependency to the `<dependencies>` element. Note that you need to use the 
 <dependency>
   <groupId>com.github.cinkhangin</groupId>
   <artifactId>anhance</artifactId>
-  <version>0.0.9-beta</version>
+  <version>0.0.13-beta</version>
 </dependency>
 ```
