@@ -19,6 +19,9 @@ val threeSeconds = 3.sec  // 3000L
 val three = threeSeconds.toSecond // 3L
 val currentMillis = millisNow //Current millisecond
 val date = millisNow.formatWith("dd/MM/yyyy") //format date
+val duration = threeSeconds.formatDuration() //3s
+val timer = threeSeconds.formatTimer() //00:03
+
 ```
 
 ### Context extensions
@@ -43,6 +46,9 @@ showKeyboard() //show keyboard
 hideKeyboard() //hide keyboard
 showLoadingDialog("Loading...") //show a loading dialog
 dismissLoadingDialog() //dismiss the loading dialog
+openGallery{ uri -> //open device image picker 
+    // ...
+}
 ```
 
 ### `AnStore` for easy DataStore Setup
@@ -52,12 +58,36 @@ dismissLoadingDialog() //dismiss the loading dialog
 val int = AnStore(context).readInt("level", 0)
 ```
 
+### `AnDayNight` for easy App Theme
+
+```kotlin
+runLightTheme() //set Light theme
+runNightTheme() //set Dark theme
+//why night but not dark? because light/night
+//if you want to change theme and save it
+context.installLightTheme() 
+context.installNightTheme()
+context.installSystemTheme() //follow system
+//get current theme
+getCurrentTheme()
+context.isNightMode()
+context.isLightMode()
+```
+
+### Extensions for files
+```kotlin
+//getting file extension from a Uri
+val fileExtension = uri.fileExtension(context)
+```
+
 ### String extensions
 ```kotlin
 val a = "100".toSafeInt() //100 safely convert string into int
 val b = "abc".toSafeInt() //0
 "hello mom".copy(context) //copy the string to clipboard
 "<font color=#ff0000>red</font>".toHtml() //string into html
+"12bdae".generateMore() //generate more random combination
+"fnck you".censor() //censor a string //**** you
 ```
 
 ## Implementation
