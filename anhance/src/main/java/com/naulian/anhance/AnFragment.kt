@@ -92,6 +92,11 @@ fun Fragment.navigateTo(direction: NavDirections) {
 fun Fragment.navigateTo(actionId: Int) {
     findNavController().navigate(actionId)
 }
+
+fun NavDirections.navigateWith(fragment: Fragment) {
+    fragment.findNavController().navigate(this)
+}
+
 fun Fragment.popBackStack(){
     findNavController().popBackStack()
 }
@@ -120,20 +125,19 @@ fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit) {
 }
 
 //Tools
-fun Fragment.openGallery(block: (uri: Uri?) -> Unit) {
-    val action = ActivityResultContracts.StartActivityForResult()
-    val forResult = registerForActivityResult(action) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.let { block(it.data) }
-        }
-    }
-    launchDeviceGallery(forResult)
-}
-
-private fun Fragment.launchDeviceGallery(forResult: ActivityResultLauncher<Intent>) {
+fun Fragment.chooseImage(forResult: ActivityResultLauncher<Intent>) {
     if (requireActivity().askForPermission(AnPermission.READ_STORAGE)) {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         forResult.launch(intent)
+    }
+}
+
+fun Fragment.activityResultCallBack(block: (uri: Uri?) -> Unit): ActivityResultLauncher<Intent> {
+    val action = ActivityResultContracts.StartActivityForResult()
+    return registerForActivityResult(action) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let { block(it.data) }
+        }
     }
 }

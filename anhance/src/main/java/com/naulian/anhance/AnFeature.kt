@@ -11,6 +11,20 @@ fun <T> nullable(any: T): T? {
     return any
 }
 
+inline fun <T> ifNotNull(value: T?, action : (nonNullValue : T) -> Unit){
+    value?.let { action(it) }
+}
+
+inline fun <T> ifNull(value: T?, action : () -> Unit){
+    if(value == null) return
+    action()
+}
+
+
+fun not(bool: Boolean): Boolean {
+    return bool.not()
+}
+
 inline fun <T> loopForValue(
     range: IntRange,
     startValue: T,

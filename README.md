@@ -46,16 +46,14 @@ showKeyboard() //show keyboard
 hideKeyboard() //hide keyboard
 showLoadingDialog("Loading...") //show a loading dialog
 dismissLoadingDialog() //dismiss the loading dialog
-openGallery{ uri -> //open device image picker 
-    // ...
-}
 ```
 
 ### `AnStore` for easy DataStore Setup
 
 ```kotlin
 //inside coroutine scope
-val int = AnStore(context).readInt("level", 0)
+val level = context.readInt("level", 0) //read
+context.writeInt("level", level) //write
 ```
 
 ### `AnDayNight` for easy App Theme
@@ -104,7 +102,7 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.0.13")
+    implementation("com.github.cinkhangin:anhance:0.0.14")
 }
 ```
 
@@ -125,6 +123,6 @@ Add a dependency to the `<dependencies>` element. Note that you need to use the 
 <dependency>
   <groupId>com.github.cinkhangin</groupId>
   <artifactId>anhance</artifactId>
-  <version>0.0.13</version>
+  <version>0.0.14</version>
 </dependency>
 ```
