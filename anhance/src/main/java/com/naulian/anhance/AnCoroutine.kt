@@ -2,9 +2,7 @@
 
 package com.naulian.anhance
 
-import android.app.Activity
 import android.app.Application
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope

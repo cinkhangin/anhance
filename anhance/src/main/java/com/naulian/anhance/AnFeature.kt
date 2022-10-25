@@ -20,6 +20,8 @@ inline fun <T> ifNull(value: T?, action : () -> Unit){
     action()
 }
 
+fun <T> isNull(value : T) = value == null
+fun <T> isNotNull(value: T) = value != null
 
 fun not(bool: Boolean): Boolean {
     return bool.not()

@@ -5,7 +5,6 @@ package com.naulian.anhance
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.Network
 import android.net.NetworkCapabilities
 
 private const val CLIPBOARD = Context.CLIPBOARD_SERVICE

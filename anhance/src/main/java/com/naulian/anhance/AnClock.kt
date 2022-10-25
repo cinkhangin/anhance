@@ -33,9 +33,9 @@ val Int.month get() = MONTH * this
 val Int.year get() = YEAR * this
 
 //make units 3L.sec == 3000 == 3 * SECOND
-val Long.sec get() = SECOND * this
-val Long.min get() = MINUTE * this
-val Long.hr get() = HOUR * this
+val Long.second get() = SECOND * this
+val Long.minute get() = MINUTE * this
+val Long.hour get() = HOUR * this
 val Long.day get() = DAY * this
 val Long.week get() = WEEK * this
 val Long.month get() = MONTH * this

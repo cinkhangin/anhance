@@ -12,6 +12,8 @@ private val Context.dataStore by preferencesDataStore(name = "dataStore")
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 class AnStore(val context: Context) {
 
+    val requireDataStore get() = context.dataStore
+
     suspend fun readBoolean(key: String, defValue: Boolean): Boolean {
         return booleanPreferenceFlow(key, defValue).first()
     }

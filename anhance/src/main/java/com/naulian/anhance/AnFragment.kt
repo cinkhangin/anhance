@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.MaterialToolbar
 import com.naulian.anhance.objects.AnLoadingDialog
 import com.naulian.anhance.objects.AnPermission
 import kotlinx.coroutines.CoroutineScope
@@ -99,6 +100,10 @@ fun NavDirections.navigateWith(fragment: Fragment) {
 
 fun Fragment.popBackStack(){
     findNavController().popBackStack()
+}
+
+fun Fragment.setUpPopBackStack(toolbar: MaterialToolbar){
+    toolbar.setNavigationOnClickListener { popBackStack() }
 }
 
 fun Fragment.updateStartDestination(id: Int) {
