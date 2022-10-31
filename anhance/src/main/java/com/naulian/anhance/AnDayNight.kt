@@ -4,7 +4,6 @@ package com.naulian.anhance
 
 import android.content.Context
 import android.content.res.Configuration
-import com.naulian.anhance.objects.AnTheme
 
 val Context.configuration: Configuration get() = this.resources.configuration
 val Context.uiMode get() = this.configuration.uiMode

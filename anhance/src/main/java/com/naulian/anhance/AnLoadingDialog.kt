@@ -1,4 +1,4 @@
-package com.naulian.anhance.objects
+package com.naulian.anhance
 
 import android.content.Context
 import android.widget.ProgressBar
@@ -20,6 +20,10 @@ object AnLoadingDialog {
             .create()
 
         dialog?.show()
+    }
+
+    fun updateMessage(message: String){
+        dialog?.setMessage(message)
     }
 
     fun dismiss() {

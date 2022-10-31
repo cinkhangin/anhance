@@ -28,15 +28,16 @@ val Context.connectivityManager get() = this.connectivityService as Connectivity
 
 val Context.networkCapabilities
     get() : NetworkCapabilities? {
-        val manager = this.connectivityManager
+        val manager = connectivityManager
         return manager.getNetworkCapabilities(manager.activeNetwork)
     }
 
-val Context.isInternetAvailable get() : Boolean {
-        networkCapabilities?.apply {
-            return hasCellular || hasEthernet || hasWifi
+val Context.isInternetAvailable
+    get() : Boolean {
+        val availability = networkCapabilities?.let {
+            it.hasWifi || it.hasCellular || it.hasEthernet
         }
-        return false
+        return availability ?: false
     }
 
 fun Context.showToast(message: String) {

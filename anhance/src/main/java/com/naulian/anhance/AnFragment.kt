@@ -2,6 +2,7 @@
 
 package com.naulian.anhance
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -20,8 +21,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
-import com.naulian.anhance.objects.AnLoadingDialog
-import com.naulian.anhance.objects.AnPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -130,12 +129,37 @@ fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit) {
 }
 
 //Tools
-fun Fragment.chooseImage(forResult: ActivityResultLauncher<Intent>) {
-    if (requireActivity().askForPermission(AnPermission.READ_STORAGE)) {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        forResult.launch(intent)
+fun Fragment.permissionRequestResult(action: (granted: Boolean) -> Unit):
+        ActivityResultLauncher<String> {
+    return registerForActivityResult(ActivityResultContracts.RequestPermission()) { action(it) }
+}
+
+fun Fragment.isPermissionGranted(
+    forResult: ActivityResultLauncher<String>,
+    requestedPermission: String
+): Boolean {
+    when {
+        requireContext().isPermissionGranted(requestedPermission) -> return true
+        shouldShowRequestPermissionRationale(requestedPermission) -> showToast("please i need this")
+        else -> forResult.launch(requestedPermission)
     }
+
+    return false
+}
+
+fun Fragment.openGallery(
+    request: ActivityResultLauncher<String>,
+    content: ActivityResultLauncher<Intent>
+) {
+    if (isPermissionGranted(request, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        launchGallery(content)
+    }
+}
+
+fun Fragment.launchGallery(content: ActivityResultLauncher<Intent>) {
+    val intent = Intent(Intent.ACTION_PICK)
+    intent.type = "image/*"
+    content.launch(intent)
 }
 
 fun Fragment.activityResultCallBack(block: (uri: Uri?) -> Unit): ActivityResultLauncher<Intent> {

@@ -1,6 +1,4 @@
-package com.naulian.anhance.objects
-
-import com.naulian.anhance.random
+package com.naulian.anhance
 
 object AnText {
     private const val LOWERCASES = "abcdefghijklmnopqrstuvwxyz"

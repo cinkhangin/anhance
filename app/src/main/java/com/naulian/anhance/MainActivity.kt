@@ -12,8 +12,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
-            btnMain.setOnClickListener {
-
+            btnMain.onClick {
+              logDebug("aaa".generateMore())
             }
         }
     }

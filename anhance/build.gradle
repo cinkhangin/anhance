@@ -46,7 +46,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //navigation
-    def nav_version = "2.5.2"
+    def nav_version = "2.5.3"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
@@ -71,7 +71,7 @@ afterEvaluate {
 
                 groupId = 'com.github.cinkhangin'
                 artifactId = 'anchance'
-                version = '0.0.15'
+                version = '0.0.16'
             }
         }
     }

@@ -1,11 +1,8 @@
-package com.naulian.anhance.objects
+package com.naulian.anhance
 
 import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.naulian.anhance.readInt
-import com.naulian.anhance.uiMode
-import com.naulian.anhance.writeInt
 
 object AnTheme {
     const val SYSTEM_MODE = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
