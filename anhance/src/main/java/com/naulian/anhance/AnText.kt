@@ -1,9 +1,10 @@
 package com.naulian.anhance
 
 object AnText {
-    private const val LOWERCASES = "abcdefghijklmnopqrstuvwxyz"
-    private const val UPPERCASES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    private const val DECIMALS = "0123456789"
+    private const val lowerCases = "abcdefghijklmnopqrstuvwxyz"
+    private const val upperCases = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    private const val decimals = "0123456789"
+    private const val symbols = "~`!@#\$%^&*()_-+={[}]|\\:;\"'<,>.?/"
 
     private val stars = hashMapOf(
         3 to "***",
@@ -24,7 +25,7 @@ object AnText {
     fun censor(text: String): String {
         var output = text
         words.forEach { word ->
-            if (text.contains(word, true)) {
+            if (word in text) {
                 val star = stars[word.length] ?: "***"
                 output = output.replace(word, star)
             }
@@ -35,21 +36,32 @@ object AnText {
     fun generateRandomString(example: String): String {
         if (example.isEmpty()) return "ooh!oh!"
 
-        var raw = ""
-        var output = ""
-        example.forEach {
-            if (LOWERCASES.contains(it, false)){
-                raw += LOWERCASES
+        val source = loopForString(example) { char ->
+            when (char) {
+                in lowerCases -> lowerCases
+                in upperCases -> upperCases
+                in decimals -> decimals
+                in symbols -> symbols
+                else -> ""
             }
-            if (UPPERCASES.contains(it, false)) raw += UPPERCASES
-            if (DECIMALS.contains(it, false)) raw += DECIMALS
         }
 
-        repeat(example.length) {
-            val rndIndex = raw.length.random
-            output += raw.elementAt(rndIndex)
+        val output = loopForString(example.length) {
+            val rndIndex = source.length.random
+            source.elementAt(rndIndex).toString()
         }
 
+        return trim(output)
+    }
+
+    fun addMorePrefix(string: String, prefix : Char , desireLength : Int) : String{
+        if(string.length >= desireLength) return string
+
+        val requiredCount = desireLength - string.length
+        var output = string
+        repeat(requiredCount){
+            output = "$prefix$output"
+        }
         return output
     }
 

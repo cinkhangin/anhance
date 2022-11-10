@@ -19,28 +19,6 @@ const val MINUTE: Long = 60_000L
 const val SECOND: Long = 1000L
 const val MILLI: Long = 1L
 
-//get current millis
-val millisNow get() = System.currentTimeMillis()
-val millisOfNow get() = millisNow
-
-//make units 3.sec == 3000 == 3 * SECOND
-val Int.sec get() = SECOND * this
-val Int.min get() = MINUTE * this
-val Int.hr get() = HOUR * this
-val Int.day get() = DAY * this
-val Int.week get() = WEEK * this
-val Int.month get() = MONTH * this
-val Int.year get() = YEAR * this
-
-//make units 3L.sec == 3000 == 3 * SECOND
-val Long.second get() = SECOND * this
-val Long.minute get() = MINUTE * this
-val Long.hour get() = HOUR * this
-val Long.day get() = DAY * this
-val Long.week get() = WEEK * this
-val Long.month get() = MONTH * this
-val Long.year get() = YEAR * this
-
 //extract units like 1038 seconds or 72 hours
 val Long.toSecond get() = this safeDiv SECOND
 val Long.toMinute get() = this safeDiv MINUTE
@@ -76,13 +54,17 @@ private val timeZone get() = TimeZone.currentSystemDefault()
 private val localDate = systemClock.todayIn(timeZone)
 private val localDateTime = now.toLocalDateTime(timeZone)
 
+//get current millis
+@Deprecated("", ReplaceWith("use millisOfNow"))
+val millisNow get() = millisOfNow
+val millisOfNow get() = System.currentTimeMillis()
 val intOfDay get() = localDate.dayOfMonth
 val intOfMonth get() = localDate.monthNumber
 val intOfYear get() = localDate.year
 
-val Long.timeLeft get() = if (this < millisNow) 0L else this - millisNow
+val Long.timeLeft get() = if (this < millisOfNow) 0L else this - millisOfNow
 val Long.isTimeLeft get() = this.timeLeft > 0
-val Long.timeGap get() = millisNow - this
+val Long.timeGap get() = millisOfNow - this
 
 fun Long.formatWith(pattern: String): String {
     return SimpleDateFormat(pattern, Locale.getDefault()).format(this)
@@ -90,7 +72,7 @@ fun Long.formatWith(pattern: String): String {
 
 //format examples : 16m, 1h, 52s
 fun Long.formatAgo(): String {
-    val ago = millisNow - this
+    val ago = millisOfNow - this
     return when {
         ago > YEAR -> "${ago / YEAR}y"
         ago > MONTH -> "${ago / MONTH}mo"
@@ -147,12 +129,18 @@ fun Long.formatDuration(): String {
         "${this.leftMinute}m",
         "${this.leftSecond}s",
     )
-    var output = ""
-    for (unitString in units) {
-        if (unitString.startsWith("0")) continue
-        output += " $unitString"
+
+    val output = loopForString(units){
+        val empty = it.startsWith("0")
+        if(empty) "" else " $it"
     }
-    return output
+    return trim(output)
+}
+
+val clockKey get() = AnClock.createKey
+object AnClock{
+    private const val keyPattern = "yyMMdd"
+    val createKey get() = millisOfNow.formatWith(keyPattern)
 }
 
 

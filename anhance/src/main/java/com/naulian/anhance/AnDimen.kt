@@ -7,20 +7,12 @@ import android.util.TypedValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-val Int.toFloat get() = this.toFloat()
-val Int.toLong get() = this.toLong()
-
-val Float.toInt get() = this.toInt()
-val Float.toLong get() = this.toLong()
-val Float.roundToInt get() = this.roundToInt()
-val Float.roundToLong get() = this.roundToLong()
-
 private const val UNIT_DP = TypedValue.COMPLEX_UNIT_DIP
 private const val UNIT_PX = TypedValue.COMPLEX_UNIT_PX
 private const val UNIT_SP = TypedValue.COMPLEX_UNIT_SP
 
-val Int.toPx get() = this.toFloat.toPx
-val Int.toDp get() = this.toFloat.toDp
+val Int.toPx get() = floatOf(this).toPx
+val Int.toDp get() = floatOf(this).toDp
 
 private val system get() = Resources.getSystem()
 private val displayMetrics get() = system.displayMetrics

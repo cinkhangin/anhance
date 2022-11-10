@@ -70,8 +70,8 @@ afterEvaluate {
                 from components.release
 
                 groupId = 'com.github.cinkhangin'
-                artifactId = 'anchance'
-                version = '0.0.16'
+                artifactId = 'anhance'
+                version = '0.1.0'
             }
         }
     }
