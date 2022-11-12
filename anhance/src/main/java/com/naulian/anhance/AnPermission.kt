@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.naulian.anhance
 
 import android.Manifest
@@ -36,7 +38,7 @@ object AnPermission {
     const val WRITE_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
     const val INTERNET = Manifest.permission.INTERNET
 
-    fun checkSelf(context: Context, permission: String): Int {
+    private fun checkSelf(context: Context, permission: String): Int {
         return ContextCompat.checkSelfPermission(context, permission)
     }
 

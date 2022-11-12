@@ -139,8 +139,7 @@ fun Long.formatDuration(): String {
 
 val clockKey get() = AnClock.createKey
 object AnClock{
-    private const val keyPattern = "yyMMdd"
-    val createKey get() = millisOfNow.formatWith(keyPattern)
+    val createKey get() = millisOfNow.formatWith(AnPattern.DATE_KEY)
 }
 
 

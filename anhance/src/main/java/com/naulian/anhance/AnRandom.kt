@@ -1,20 +1,24 @@
+@file:Suppress("unused")
+
 package com.naulian.anhance
 
 import kotlin.random.Random
 
 val Int.random get() = AnRandom.generateInt(0, this)
-val Long.random get() = AnRandom.generateLong(0 , this)
+val Long.random get() = AnRandom.generateLong(0, this)
+
+fun randomOf(from: Int = 0, until: Int) = AnRandom.generateInt(from, until)
+fun randomOf(from: Long = 0L, until: Long) = AnRandom.generateLong(from, until)
+fun randomFloat() = AnRandom.generateFloat()
 
 object AnRandom {
-    val generator get() = generator()
+    private val generator get() = generator()
 
-    fun generateInt(from: Int, until: Int): Int {
-        return generator.nextInt(from, until)
-    }
+    fun generateFloat() = generator.nextFloat()
 
-    fun generateLong(from: Long, until: Long): Long {
-        return generator.nextLong(from, until)
-    }
+    fun generateInt(from: Int, until: Int) = generator.nextInt(from, until)
+    fun generateLong(from: Long, until: Long) = generator.nextLong(from, until)
+
 
     //private methods==================
     private fun generator(): Random {

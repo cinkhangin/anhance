@@ -95,3 +95,7 @@ inline fun loopForString(string : String, block: (char: Char) -> String): String
     }
     return output
 }
+
+inline fun <T> forEach(list: Iterable<T>, action: (T) -> Unit) {
+    for (element in list) action(element)
+}
