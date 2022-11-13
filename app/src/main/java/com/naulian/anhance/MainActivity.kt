@@ -13,8 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.apply {
             btnMain.onClick {
-                val duration = hourOf(3) + minuteOf(2) + secondOf(42)
-                txtMain.text = duration.formatDuration()
+                txtMain.text = ""
             }
         }
     }

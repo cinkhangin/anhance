@@ -13,6 +13,19 @@ showKeyboard() //show the keyboard
 hideKeyboard() //hide the keyboard
 ```
 
+### Extensions for Assets
+
+```kotlin
+context.readAssets("filename.txt") //read string from assets
+```
+
+### Extensions for Assets
+
+```kotlin
+context.playAudio(R.raw.music) //play audio from resource
+context.playAudio("music.mp3") //play audio from assets
+```
+
 ### Extensions for Date and time
 ```kotlin
 val threeSeconds = 3.sec  // 3000L
@@ -88,6 +101,12 @@ val b = "abc".toSafeInt() //0
 "fnck you".censor() //censor a string //**** you
 ```
 
+Sometimes I want my code to be one liner so I added these useless functions
+```kotlin
+button.onClick{ context.showToast("hi mom!") } //onClick is just setOnClickListener{}
+button2.onLongClick{ context.showToast("hi mom!") } //setOnLongClickListener{}
+```
+
 ## Implementation
 ### Gradle
 
@@ -102,7 +121,7 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.1.0")
+    implementation("com.github.cinkhangin:anhance:0.1.2")
 }
 ```
 
@@ -123,6 +142,6 @@ Add a dependency to the `<dependencies>` element. Note that you need to use the 
 <dependency>
   <groupId>com.github.cinkhangin</groupId>
   <artifactId>anhance</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.2</version>
 </dependency>
 ```

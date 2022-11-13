@@ -11,11 +11,9 @@ fun intOf(string: String) = string.toSafeInt()
 fun intOf(float: Float) = float.toInt()
 
 fun longOf(int: Int) = int.toLong()
-
 fun floatOf(int: Int) = int.toFloat()
 
-fun rountIntOf(float: Float) = float.roundToInt()
-
+fun roundIntOf(float: Float) = float.roundToInt()
 fun roundLongOf(float: Float) = float.roundToLong()
 
 //dimen
