@@ -2,15 +2,8 @@
 
 package com.naulian.anhance
 
-import android.content.Context
-import androidx.fragment.app.Fragment
-
-//Temporary class to destroy later
+//Temporary class to destroy it later
 fun <T> loadUi(binding: AnBinding<T>, action: T.() -> Unit) = action(binding.value)
-fun <T> Fragment.loadUi(
-    binding: AnBinding<T>,
-    action: T.(context: Context) -> Unit
-) = action(binding.value, requireContext())
 
 
 class AnBinding<T> {

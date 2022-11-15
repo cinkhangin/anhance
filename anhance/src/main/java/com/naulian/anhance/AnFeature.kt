@@ -17,6 +17,10 @@ inline fun <T> ifNotNull(value: T?, action : (nonNullValue : T) -> Unit){
     value?.let { action(it) }
 }
 
+inline fun <T> check(value: T?, action : (nonNullValue : T) -> Unit){
+    value?.let { action(it) }
+}
+
 //check if the value is null and continue if it is null
 inline fun <T> ifNull(value: T?, action : () -> Unit){
     if(value == null) return

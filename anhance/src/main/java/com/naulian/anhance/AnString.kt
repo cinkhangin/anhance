@@ -14,14 +14,12 @@ fun String.caseContains(string: CharSequence) =
 fun String.caseContains(char: Char) =
     contains(char, false)
 
-
-private val String.clipData
-    get() : ClipData =
-        ClipData.newPlainText("clip", this)
-
 fun String.copy(context: Context) {
-    context.clipboardManager.setPrimaryClip(this.clipData)
-    context.showToast(this)
+   AnString.copy(context ,this)
+}
+
+fun Context.copyString(string: String) {
+    AnString.copy(this, string)
 }
 
 fun String.censor() = AnString.censor(this)
@@ -95,5 +93,11 @@ object AnString {
         if (string.length >= placeholder.length) return string
         val suffix = placeholder.drop(string.length)
         return "$string$suffix"
+    }
+
+    fun copy(context: Context, string: String) {
+        val data = ClipData.newPlainText("clip", string)
+        context.clipboardManager.setPrimaryClip(data)
+        context.showToast(string)
     }
 }
