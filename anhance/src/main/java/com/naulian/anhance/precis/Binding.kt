@@ -1,12 +1,14 @@
 @file:Suppress("unused")
 
-package com.naulian.anhance
+package com.naulian.anhance.precis
+
+import com.naulian.anhance.nonNull
 
 //Temporary class to destroy it later
-fun <T> loadUi(binding: AnBinding<T>, action: T.() -> Unit) = action(binding.value)
+fun <T> loadUi(binding: Binding<T>, action: T.() -> Unit) = action(binding.value)
 
 
-class AnBinding<T> {
+class Binding<T> {
 
     private var binding: T? = null
     val value get() = nonNull(binding)

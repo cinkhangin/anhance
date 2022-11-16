@@ -121,27 +121,6 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.1.2")
+    implementation("com.github.cinkhangin:anhance:0.1.4")
 }
-```
-
-### Maven
-
-Add a dependency to the `<dependencies>` element. Note that you need to use the platform-specific `-jvm` artifact in Maven.
-
-```xml
-
-<repositories>
-  <repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-  </repository>
-</repositories>
-```
-```xml
-<dependency>
-  <groupId>com.github.cinkhangin</groupId>
-  <artifactId>anhance</artifactId>
-  <version>0.1.2</version>
-</dependency>
 ```
