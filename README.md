@@ -121,6 +121,6 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.1.4")
+    implementation("com.github.cinkhangin:anhance:0.1.5")
 }
 ```

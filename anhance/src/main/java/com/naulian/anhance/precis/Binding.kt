@@ -22,5 +22,6 @@ class Binding<T> {
     }
 
     operator fun invoke(action: T.() -> Unit) = action(value)
+    operator fun invoke() = value
 
 }

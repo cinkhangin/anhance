@@ -17,7 +17,11 @@ inline fun <T> ifNotNull(value: T?, action : (nonNullValue : T) -> Unit){
     value?.let { action(it) }
 }
 
-inline fun <T> check(value: T?, action : (nonNullValue : T) -> Unit){
+inline fun <T> failure(value: T?, action : (nonNullValue : T) -> Unit){
+    value?.let { action(it) }
+}
+
+inline fun <T> success(value: T?, action : (nonNullValue : T) -> Unit){
     value?.let { action(it) }
 }
 
@@ -44,6 +48,14 @@ fun <T> isNotNull(value: T) = value != null
 //return the opposite value of a boolean
 fun not(bool: Boolean): Boolean {
     return bool.not()
+}
+
+inline fun <T> apply(data: T, block: T.() -> Unit) {
+    data.apply { block(this) }
+}
+
+inline fun <T> use(data: T, block: (value : T) -> Unit) {
+    data.apply { block(this) }
 }
 
 inline fun <T> loopForValue(

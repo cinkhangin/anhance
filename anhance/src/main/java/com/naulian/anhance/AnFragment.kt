@@ -20,19 +20,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 val Fragment.isInternetAvailable get() = requireContext().isInternetAvailable
-
-fun Fragment.fragmentOnStartScope(block: suspend CoroutineScope.() -> Unit) {
-    viewLifecycleOwner.lifecycleScope.launch {
-        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            block(this@repeatOnLifecycle)
-        }
-    }
-}
 
 fun Fragment.showToast(message: String) {
     showTextToast(requireContext(), message)
@@ -79,7 +72,7 @@ fun Fragment.createLLManager(
 val Fragment.configuration get() : Configuration = resources.configuration
 val Fragment.orientation get() = configuration.orientation
 val Fragment.isLandscape get() = orientation == Configuration.ORIENTATION_LANDSCAPE
-fun Fragment.createGridLayoutManager(defaultSpan: Int, otherSpan: Int): GridLayoutManager {
+fun Fragment.createGLManager(defaultSpan: Int, otherSpan: Int): GridLayoutManager {
     val spanCount = if (isLandscape) otherSpan else defaultSpan
     return GridLayoutManager(requireContext(), spanCount)
 }
@@ -120,12 +113,16 @@ inline fun Fragment.initialize(block: Context.() -> Unit) {
     block(requireContext())
 }
 
-inline fun <T> Fragment.loadUi(binding: T, block: T.() -> Unit) {
+inline fun Fragment.loadUi(binding: ViewBinding, block: ViewBinding.() -> Unit) {
     binding.apply { block(this) }
 }
 
 fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit) {
-    fragmentOnStartScope { block(this) }
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            block(this@repeatOnLifecycle)
+        }
+    }
 }
 
 //Tools

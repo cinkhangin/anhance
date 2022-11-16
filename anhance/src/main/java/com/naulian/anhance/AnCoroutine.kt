@@ -4,7 +4,10 @@ package com.naulian.anhance
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +20,11 @@ fun <T> Flow<T>.onEachLaunchIn(scope: CoroutineScope, action: suspend (T) -> Uni
 }
 
 fun <T> CoroutineScope.onEachLaunch(data: Flow<T>, action: suspend (T) -> Unit) {
-    data.onEachLaunchIn(this) { action(it) }
+    data.onEach { action(it) }.launchIn(this)
+}
+
+fun <T> CoroutineScope.observe(data: Flow<T>, action: suspend (T) -> Unit) {
+    data.onEach { action(it) }.launchIn(this)
 }
 
 fun Application.applicationScope(action: suspend CoroutineScope.() -> Unit) {
@@ -29,6 +36,14 @@ fun Application.applicationScope(action: suspend CoroutineScope.() -> Unit) {
 fun AppCompatActivity.activityScope(action: suspend CoroutineScope.() -> Unit) {
     lifecycleScope.launch {
         action(this)
+    }
+}
+
+fun Fragment.fragmentOnStartScope(block: suspend CoroutineScope.() -> Unit) {
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            block(this@repeatOnLifecycle)
+        }
     }
 }
 

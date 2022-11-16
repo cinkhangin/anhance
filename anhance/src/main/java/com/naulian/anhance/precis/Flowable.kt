@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.naulian.anhance.precis
 
 import kotlinx.coroutines.CoroutineScope
@@ -10,19 +12,24 @@ fun <T> CoroutineScope.onEachLaunchIn(flowable: Flowable<T>, action: suspend (T)
     flowable.data.onEach { action(it) }.launchIn(this)
 }
 
+fun <T> CoroutineScope.observe(flowable: Flowable<T>, action: suspend (T) -> Unit) {
+    flowable.data.onEach { action(it) }.launchIn(this)
+}
+
 class Flowable<T>(val defValue : T){
 
-    private val mutableStateFlow = MutableStateFlow(defValue)
-    val data = mutableStateFlow.asStateFlow()
+    private val mutableData = MutableStateFlow(defValue)
+    val data = mutableData.asStateFlow()
 
     fun update(newValue : T){
-        mutableStateFlow.value = newValue
+        mutableData.value = newValue
     }
 
     fun reset(){
-        mutableStateFlow.value = defValue
+        mutableData.value = defValue
     }
 
+    operator fun invoke() = data
     operator fun invoke(scope: CoroutineScope, action: suspend (T) -> Unit){
         data.onEach { action(it) }.launchIn(scope)
     }
