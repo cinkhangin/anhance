@@ -20,8 +20,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.appbar.MaterialToolbar
+import com.naulian.anhance.precis.Binding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -113,9 +113,8 @@ inline fun Fragment.initialize(block: Context.() -> Unit) {
     block(requireContext())
 }
 
-inline fun Fragment.loadUi(binding: ViewBinding, block: ViewBinding.() -> Unit) {
-    binding.apply { block(this) }
-}
+fun <T> Fragment.loadUi(binding: Binding<T>, action: T.() -> Unit) =
+    action(binding.value)
 
 fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {

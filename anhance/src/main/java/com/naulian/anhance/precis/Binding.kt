@@ -5,9 +5,6 @@ package com.naulian.anhance.precis
 import com.naulian.anhance.nonNull
 
 //Temporary class to destroy it later
-fun <T> loadUi(binding: Binding<T>, action: T.() -> Unit) = action(binding.value)
-
-
 class Binding<T> {
 
     private var binding: T? = null
