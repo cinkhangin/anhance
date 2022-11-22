@@ -19,7 +19,7 @@ hideKeyboard() //hide the keyboard
 context.readAssets("filename.txt") //read string from assets
 ```
 
-### Extensions for Assets
+### Extensions for Audio
 
 ```kotlin
 context.playAudio(R.raw.music) //play audio from resource
@@ -28,12 +28,12 @@ context.playAudio("music.mp3") //play audio from assets
 
 ### Extensions for Date and time
 ```kotlin
-val threeSeconds = 3.sec  // 3000L
-val three = threeSeconds.toSecond // 3L
-val currentMillis = millisNow //Current millisecond
-val date = millisNow.formatWith("dd/MM/yyyy") //format date
-val duration = threeSeconds.formatDuration() //3s
-val timer = threeSeconds.formatTimer() //00:03
+val duration = 3.second  // 3000L
+val three = duration.toSecond // 3L
+val currentMillis = millisOfNow //Current millisecond
+val date = millisOfNow.formatWith("dd/MM/yyyy") //format date
+val formatted = threeSeconds.formatDuration() //3s
+val timer = duration.formatTimer() //00:03
 
 ```
 
@@ -69,6 +69,17 @@ val level = context.readInt("level", 0) //read
 context.writeInt("level", level) //write
 ```
 
+### `AnRandom` 
+- Kotlin Random(without seed) will generate the same random sequence of result
+- this is a feature, I guess.
+```kotlin
+//If you want to generate different sets of result, use millis as seed
+val random = Random(millisOfNow).nextInt(0 , 10)
+//But anhance is shorter
+val random2 = randomOf(0,  10)
+val randomFloat = randomFloat()
+```
+
 ### `AnDayNight` for easy App Theme
 
 ```kotlin
@@ -101,10 +112,34 @@ val b = "abc".toSafeInt() //0
 "fnck you".censor() //censor a string //**** you
 ```
 
-Sometimes I want my code to be one liner so I added these useless functions
+I also added these extensions to make my codes shorter
 ```kotlin
 button.onClick{ context.showToast("hi mom!") } //onClick is just setOnClickListener{}
 button2.onLongClick{ context.showToast("hi mom!") } //setOnLongClickListener{}
+```
+
+and a bunch of extensions that I added to use for my projects
+```kotlin
+//without anhance (inside a fragment)
+viewLifecycleOwner.lifecycleScope.launch {
+    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.myFlow.onEach { 
+          //observe data changes here
+        }.launchIn(scope)
+        viewModel.myFlow2.onEach {
+          //observe data changes here
+        }.launchIn(scope)
+    }
+}
+//with anhance (inside a fragment)
+loadData {
+    observe(viewModel.myFlow){ 
+      //observe data changes here
+    }
+    observe(viewModel.myFlow2){
+      //observe data changes here
+    }
+}
 ```
 
 ## Implementation
@@ -121,6 +156,6 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.1.5")
+    implementation("com.github.cinkhangin:anhance:0.2.1")
 }
 ```
