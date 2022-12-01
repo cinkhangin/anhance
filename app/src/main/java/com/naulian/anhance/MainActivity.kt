@@ -3,17 +3,16 @@ package com.naulian.anhance
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.naulian.anhance.databinding.ActivityMainBinding
-import com.naulian.anhance.precis.Binding
 
 class MainActivity : AppCompatActivity() {
-    private val binding = Binding<ActivityMainBinding>()
+    private var binding : ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.assign(ActivityMainBinding.inflate(layoutInflater))
-        setContentView(binding().root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
-        binding {
+        binding?.apply {
             btnMain.onClick {
                 txtMain.text = ""
             }
