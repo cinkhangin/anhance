@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
-import com.naulian.anhance.precis.Binding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -50,14 +49,6 @@ fun Fragment.getColor(resId: Int): Int {
 fun Fragment.showKeyboard() = requireActivity().showKeyboard()
 fun Fragment.hideKeyboard() = requireActivity().hideKeyboard()
 
-fun Fragment.showLoadingDialog(message: String = "Please wait") {
-    AnLoadingDialog.show(requireContext(), message)
-}
-
-fun Fragment.dismissLoadingDialog() {
-    AnLoadingDialog.dismiss()
-}
-
 fun Fragment.createLLManager(
     vertical: Boolean = true,
     reverse: Boolean = false,
@@ -82,6 +73,7 @@ val Fragment.navigationGraph get() = findNavController().graph
 fun Fragment.navigateTo(direction: NavDirections) {
     findNavController().navigate(direction)
 }
+
 fun Fragment.navigateTo(actionId: Int) {
     findNavController().navigate(actionId)
 }
@@ -90,11 +82,11 @@ fun NavDirections.navigateWith(fragment: Fragment) {
     fragment.findNavController().navigate(this)
 }
 
-fun Fragment.popBackStack(){
+fun Fragment.popBackStack() {
     findNavController().popBackStack()
 }
 
-fun Fragment.setUpPopBackStack(toolbar: MaterialToolbar){
+fun Fragment.setUpPopBackStack(toolbar: MaterialToolbar) {
     toolbar.setNavigationOnClickListener { popBackStack() }
 }
 
@@ -113,8 +105,7 @@ inline fun Fragment.initialize(block: Context.() -> Unit) {
     block(requireContext())
 }
 
-fun <T> Fragment.loadUi(binding: Binding<T>, action: T.() -> Unit) =
-    action(binding.value)
+fun <T> Fragment.loadUi(binding: T, action: T.() -> Unit) = action(binding)
 
 fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
