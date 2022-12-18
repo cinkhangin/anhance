@@ -2,6 +2,14 @@
 
 package com.naulian.anhance
 
+fun <T> check(any: T?, action: (T) -> Unit) {
+    any?.let { action(it) }
+}
+
+fun <A, B> check(a: A?, b: B?, action: (A, B) -> Unit) {
+    a?.let { aa -> b?.let { bb -> action(aa, bb) } }
+}
+
 //convert nullable value to non-nullable value
 fun <T> nonNull(any: T?): T {
     return any!!
