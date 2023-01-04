@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -20,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -49,6 +51,11 @@ fun Fragment.getColor(resId: Int): Int {
 fun Fragment.showKeyboard() = requireActivity().showKeyboard()
 fun Fragment.hideKeyboard() = requireActivity().hideKeyboard()
 
+fun Fragment.observeBackPressed(action: () -> Unit) {
+    requireActivity().onBackPressedDispatcher
+        .addCallback(viewLifecycleOwner) { action() }
+}
+
 fun Fragment.createLLManager(
     vertical: Boolean = true,
     reverse: Boolean = false,
@@ -63,9 +70,19 @@ fun Fragment.createLLManager(
 val Fragment.configuration get() : Configuration = resources.configuration
 val Fragment.orientation get() = configuration.orientation
 val Fragment.isLandscape get() = orientation == Configuration.ORIENTATION_LANDSCAPE
-fun Fragment.createGLManager(defaultSpan: Int, otherSpan: Int): GridLayoutManager {
+fun Fragment.createGLManager(defaultSpan: Int = 2, otherSpan: Int = 2): GridLayoutManager {
     val spanCount = if (isLandscape) otherSpan else defaultSpan
     return GridLayoutManager(requireContext(), spanCount)
+}
+
+fun Fragment.createSGManager(
+    defaultSpan: Int = 2, otherSpan: Int = 0, vertical: Boolean
+): StaggeredGridLayoutManager {
+    val newOtherSpan = if (otherSpan == 0) defaultSpan else otherSpan
+    val spanCount = if (isLandscape) newOtherSpan else defaultSpan
+    val orientation = if (vertical) StaggeredGridLayoutManager.VERTICAL
+    else StaggeredGridLayoutManager.HORIZONTAL
+    return StaggeredGridLayoutManager(spanCount, orientation)
 }
 
 //navigation
@@ -127,7 +144,7 @@ fun Fragment.isPermissionGranted(
 ): Boolean {
     when {
         requireContext().isPermissionGranted(requestedPermission) -> return true
-        shouldShowRequestPermissionRationale(requestedPermission) -> showToast("please i need this")
+        shouldShowRequestPermissionRationale(requestedPermission) -> forResult.launch(requestedPermission)
         else -> forResult.launch(requestedPermission)
     }
 

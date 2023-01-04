@@ -22,6 +22,11 @@ fun Context.copyString(string: String) {
     AnString.copy(this, string)
 }
 
+fun String.isValidEmail(): Boolean {
+    val emailRegex = "^[A-Za-z0-9+_.-]+@(.+)\$".toRegex()
+    return matches(emailRegex)
+}
+
 fun String.censor() = AnString.censor(this)
 fun String.generateMore() = AnString.generateRandomString(this)
 fun String.injectLast(string: String) = AnString.addMoreLast(string, this)

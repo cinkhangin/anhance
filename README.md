@@ -5,17 +5,17 @@ An Android library to make life easier.
 This Library has many useful Functions to solve problems easier and faster.
 
 Keep that in mind that by using Anhance, you will have less control over your code.
-For example, when using showToast(message) to show toast you cannot set the duration to
+For example, when using `showToast(message)` to show toast you cannot set the duration to
 Toast.LENGTH_LONG because it uses Toast.LENGTH_SHORT.
 
 But Anhance make it easier to build app faster and easier, at least that's what I hope.
-For example, I can just user hideKeyboard() function to hide the keyboard when I want to because
-I don't even remember the code to hide the keyboard programmatically
+For example, I can just use `hideKeyboard()` function to hide the keyboard whenever I wanted to, because
+I don't even remember the code to hide keyboard programmatically
 
 Never let anyone tell you that you are ugly.
-Anyway Enjoy coding! You beautiful son of a nice people :D
+Anyway Enjoy coding! :D
 
-## Fetures
+## Features
 ### Activity extensions
 
 ```kotlin
@@ -56,8 +56,8 @@ context.isInternetAvailable //check connection
 
 ### Extensions for dimensions
 ```kotlin
-val padding = 16.toPx //convert 12dp to px
-val margin = 24.toDp //convert 24px to dp
+val padding = 16.toPx() //convert 16dp to px
+val margin = 24.toDp() //convert 24px to dp
 ```
 
 ### Fragment extensions
@@ -167,6 +167,6 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.2.5")
+    implementation("com.github.cinkhangin:anhance:0.2.6")
 }
 ```
