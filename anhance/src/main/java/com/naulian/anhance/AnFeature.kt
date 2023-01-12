@@ -25,8 +25,7 @@ inline fun <T> use(data: T, block: (value : T) -> Unit) {
 }
 
 inline fun <T> loopForValue(
-    range: IntRange,
-    startValue: T,
+    range: IntRange, startValue: T,
     block: (index: Int, value: T) -> T
 ): T {
     var value: T = startValue

@@ -29,18 +29,9 @@ inline fun <T> nullCheck(value: T?, action : (nonNullValue : T) -> Unit){
     value?.let { action(it) }
 }
 
-inline fun <T> failure(value: T?, action : (nonNullValue : T) -> Unit){
-    value?.let { action(it) }
-}
-
-inline fun <T> success(value: T?, action : (nonNullValue : T) -> Unit){
-    value?.let { action(it) }
-}
-
 //check if the value is null and continue if it is null
 inline fun <T> ifNull(value: T?, action : () -> Unit){
-    if(value == null) return
-    action()
+    if(value == null) action()
 }
 
 //return true is the value is null
