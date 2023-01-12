@@ -2,18 +2,17 @@
 
 An Android library to make life easier.
 
-This Library has many useful Functions to solve problems easier and faster.
+This library has many useful functions to solve problems easier and faster.
 
 Keep that in mind that by using Anhance, you will have less control over your code.
 For example, when using `showToast(message)` to show toast you cannot set the duration to
-Toast.LENGTH_LONG because it uses Toast.LENGTH_SHORT.
+`Toast.LENGTH_LONG` because it uses `Toast.LENGTH_SHORT`.
 
 But Anhance make it easier to build app faster and easier, at least that's what I hope.
 For example, I can just use `hideKeyboard()` function to hide the keyboard whenever I wanted to, because
 I don't even remember the code to hide keyboard programmatically
 
-Never let anyone tell you that you are ugly.
-Anyway Enjoy coding! :D
+Never let anyone tell you that you are ugly. Anyway enjoy coding! :D
 
 ## Features
 ### Activity extensions
@@ -39,7 +38,7 @@ context.playAudio("music.mp3") //play audio from assets
 
 ### Extensions for Date and time
 ```kotlin
-val duration = 3.second  // 3000L
+val duration = 3.seconds  // 3000L
 val three = duration.toSecond // 3L
 val currentMillis = millisOfNow //Current millisecond
 val date = millisOfNow.formatWith("dd/MM/yyyy") //format date
@@ -167,6 +166,6 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.2.6")
+    implementation("com.github.cinkhangin:anhance:0.2.7")
 }
 ```
