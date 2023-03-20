@@ -23,29 +23,33 @@ object AnReader {
     private var utteranceProgress = MutableStateFlow(STATE_INITIALIZE)
     val utteranceProgressFlow = utteranceProgress.asStateFlow()
 
-    fun read(text : String){
-        textToSpeech?.speak(text , TextToSpeech.QUEUE_FLUSH , null , "tts")
+    fun read(text: String, speechRate: Float = 1.0f) {
+        textToSpeech?.setSpeechRate(speechRate)
+        textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts")
     }
 
-    fun initialize(context: Context){
+    fun initialize(context: Context) {
         textToSpeech?.let {
             return
         }
 
         val speechListener = TextToSpeech.OnInitListener {
-            if(it == TextToSpeech.SUCCESS) {
+            if (it == TextToSpeech.SUCCESS) {
                 textToSpeech?.language = Locale.US
-                textToSpeech?.setSpeechRate(1.1f)
+                textToSpeech?.setSpeechRate(1.0f)
 
-                val utteranceListener = object : UtteranceProgressListener(){
+                val utteranceListener = object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String?) {
                         utteranceProgress.value = STATE_READING
                     }
+
                     override fun onDone(utteranceId: String?) {
                         utteranceProgress.value = STATE_DONE
                     }
+
                     @Deprecated("Deprecated in Java")
-                    override fun onError(utteranceId: String?) {}
+                    override fun onError(utteranceId: String?) {
+                    }
                 }
 
                 textToSpeech?.setOnUtteranceProgressListener(utteranceListener)
@@ -53,31 +57,31 @@ object AnReader {
                 boostPerformance()
             }
         }
-        textToSpeech = TextToSpeech(context , speechListener)
+        textToSpeech = TextToSpeech(context, speechListener)
     }
 
-    fun check(context: Context){
-        if(isInitialized.value) return
+    fun check(context: Context) {
+        if (isInitialized.value) return
 
         initialize(context)
     }
 
-    fun destroy(){
+    fun destroy() {
         textToSpeech?.shutdown()
         textToSpeech = null
         isInitialized.value = false
     }
 
-    fun stop(){
+    fun stop() {
         textToSpeech?.stop()
     }
 
-    fun reset(){
+    fun reset() {
         utteranceProgress.value = STATE_IDLE
     }
 
     //to fix texttospeech delay on first call
-    private fun boostPerformance(){
+    private fun boostPerformance() {
         read("")
     }
 }

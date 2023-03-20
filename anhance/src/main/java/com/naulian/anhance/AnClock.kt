@@ -20,20 +20,35 @@ const val SECOND: Long = 1000L
 const val MILLI: Long = 1L
 
 //extract units like 1038 seconds or 72 hours
+@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.secondCount"))
 val Long.toSecond get() = this safeDiv SECOND
+@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.minuteCount"))
 val Long.toMinute get() = this safeDiv MINUTE
+@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.hourCount"))
 val Long.toHour get() = this safeDiv HOUR
+@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.dayCount"))
 val Long.toDay get() = this safeDiv DAY
+@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.weekCount"))
 val Long.toWeek get() = this safeDiv WEEK
+@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.monthCount"))
 val Long.toMonth get() = this safeDiv MONTH
+@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.yearCount"))
 val Long.toYear get() = this safeDiv YEAR
 
+val Long.secondCount get() = this safeDiv SECOND
+val Long.minuteCount get() = this safeDiv MINUTE
+val Long.hourCount get() = this safeDiv HOUR
+val Long.dayCount get() = this safeDiv DAY
+val Long.weekCount get() = this safeDiv WEEK
+val Long.monthCount get() = this safeDiv MONTH
+val Long.yearCount get() = this safeDiv YEAR
+
 //extract units like 35 minutes or 19 hours
-val Long.leftSecond get() = this.toSecond % 60
-val Long.leftMinute get() = this.toMinute % 60
-val Long.leftHour get() = this.toHour % 24
-val Long.leftDay get() = this.toDay % 365
-val Long.leftYear get() = this.toYear
+val Long.leftSecond get() = this.secondCount % 60
+val Long.leftMinute get() = this.minuteCount % 60
+val Long.leftHour get() = this.hourCount % 24
+val Long.leftDay get() = this.dayCount % 365
+val Long.leftYear get() = this.yearCount
 
 private val Long.secondOrEmpty get() = if (this > 0) "${this}s" else ""
 private val Long.minuteOrEmpty get() = if (this > 0) "${this}m" else ""

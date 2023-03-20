@@ -2,6 +2,7 @@
 
 package com.naulian.anhance
 
+import android.content.Context
 import android.content.DialogInterface
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -16,3 +17,6 @@ fun MaterialAlertDialogBuilder.setSecondaryButton(
 fun MaterialAlertDialogBuilder.setTertiaryButton(
     text: String, action: DialogInterface.() -> Unit
 ) = setNeutralButton(text) { dialog, _ -> action(dialog) }
+
+fun dialogBuilder(context: Context) =
+    MaterialAlertDialogBuilder(context)

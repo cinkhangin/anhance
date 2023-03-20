@@ -8,6 +8,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
+@Deprecated("Use context.readStringAsset(filename){ result : Result<String> -> } instead")
 fun Context.readStringAsset(filename: String): String {
     var string = ""
     try {
@@ -20,11 +21,34 @@ fun Context.readStringAsset(filename: String): String {
     return string
 }
 
+fun Context.readStringAsset(filename: String, action: (Result<String>) -> Unit) {
+    try {
+        val string = assets.open(filename)
+            .bufferedReader()
+            .use { it.readText() }
+        action(Result.success(string))
+    } catch (ioException: IOException) {
+        ioException.printStackTrace()
+        action(Result.failure(ioException))
+    }
+}
+
+//deprecate in 0.3.0
+@Deprecated("Use context.readAssetFd(filename){ result : Result<AssetFileDescriptor> -> } instead")
 fun Context.readAsset(filename: String): AssetFileDescriptor? {
     return try {
         assets.openFd(filename)
     } catch (e: IOException) {
         null
+    }
+}
+
+fun Context.readAssetFd(filename: String, action: (Result<AssetFileDescriptor>) -> Unit) {
+    try {
+        action(Result.success(assets.openFd(filename)))
+    } catch (exception: IOException) {
+        exception.printStackTrace()
+        action(Result.failure(exception))
     }
 }
 
@@ -43,7 +67,7 @@ fun Context.assetFilePath(assetName: String): String? {
             return file.absolutePath
         }
     } catch (e: IOException) {
-        logError("anhance : cannot process file path for $assetName")
+        logError("AnAsset","cannot process file path for $assetName")
         null
     }
 }
