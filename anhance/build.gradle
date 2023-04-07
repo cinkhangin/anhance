@@ -47,7 +47,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     //lifecycle
-    def lifecycleVersion = "2.6.0"
+    def lifecycleVersion = "2.6.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
@@ -57,6 +57,9 @@ dependencies {
 
     //datetime
     implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
 }
 
 afterEvaluate {
@@ -67,7 +70,7 @@ afterEvaluate {
 
                 groupId = 'com.github.cinkhangin'
                 artifactId = 'anhance'
-                version = '0.3.0'
+                version = '0.3.1'
             }
         }
     }

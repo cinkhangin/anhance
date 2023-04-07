@@ -15,7 +15,7 @@ fun String.caseContains(char: Char) =
     contains(char, false)
 
 fun String.copy(context: Context) {
-   AnString.copy(context ,this)
+    AnString.copy(context, this)
 }
 
 fun Context.copyString(string: String) {
@@ -103,6 +103,8 @@ object AnString {
     fun copy(context: Context, string: String) {
         val data = ClipData.newPlainText("clip", string)
         context.clipboardManager.setPrimaryClip(data)
-        context.showToast(string)
+
+        val message = if (string.length > 20) "Copied" else string
+        context.showToast(message)
     }
 }
