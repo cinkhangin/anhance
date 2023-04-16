@@ -4,10 +4,15 @@ package com.naulian.anhance
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -172,5 +177,44 @@ fun Fragment.activityResultCallBack(block: (uri: Uri?) -> Unit): ActivityResultL
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.let { block(it.data) }
         }
+    }
+}
+
+fun Fragment.setLightStatusBar(light: Boolean) {
+    requireActivity().setLightStatusBar(light)
+}
+
+fun Activity.setLightStatusBar(light: Boolean) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        window.insetsController?.apply {
+            val lightAppearance = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            val appearance = if (light) lightAppearance else 0
+
+            setSystemBarsAppearance(appearance, lightAppearance)
+            show(WindowInsets.Type.statusBars())
+        }
+    } else {
+        val appearance = if (light) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else 0
+        window.decorView.systemUiVisibility = appearance
+    }
+}
+
+fun Fragment.openTelegramUser(username: String) {
+    requireActivity().openTelegramUser(username)
+}
+
+fun Activity.openTelegramUser(username: String) {
+    val telegram = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$username"))
+    telegram.setPackage("org.telegram.messenger")
+    try {
+        startActivity(telegram)
+    } catch (e: ActivityNotFoundException) {
+        showToast("Telegram not installed or username not found")
+    }
+}
+
+fun Fragment.openMic(request : ActivityResultLauncher<String>, action: ()-> Unit){
+    if (isPermissionGranted(request, Manifest.permission.RECORD_AUDIO)) {
+        action()
     }
 }

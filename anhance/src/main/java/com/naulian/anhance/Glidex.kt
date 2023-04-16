@@ -33,3 +33,4 @@ fun ImageView.loadWithGlide(@DrawableRes drawable: Int) =
 
 fun ImageView.loadWithGlide(bitmap: Bitmap) =
     loadImageWithGLide(bitmap, this)
+
