@@ -1,6 +1,7 @@
 # anhance
 
 An Android library to make life easier. 
+
 This library offers many useful functions to solve problems more efficiently and quickly.
 
 Keep in mind that by using Anhance, you will have less control over your code. For example, when using showToast(message) to display a toast, you cannot set the duration to Toast.LENGTH_LONG as it uses Toast.LENGTH_SHORT instead.
