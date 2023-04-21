@@ -1,18 +1,14 @@
 # anhance
 
-An Android library to make life easier.
+An Android library to make life easier. 
 
-This library has many useful functions to solve problems easier and faster.
+This library offers many useful functions to solve problems more efficiently and quickly.
 
-Keep that in mind that by using Anhance, you will have less control over your code.
-For example, when using `showToast(message)` to show toast you cannot set the duration to
-`Toast.LENGTH_LONG` because it uses `Toast.LENGTH_SHORT`.
+Keep in mind that by using Anhance, you will have less control over your code. For example, when using showToast(message) to display a toast, you cannot set the duration to Toast.LENGTH_LONG as it uses Toast.LENGTH_SHORT instead.
 
-But Anhance make it easier to build app faster and easier, at least that's what I hope.
-For example, I can just use `hideKeyboard()` function to hide the keyboard whenever I wanted to, because
-I don't even remember the code to hide keyboard programmatically
+However, Anhance makes it easier to build apps faster and more efficiently. For instance, you can simply use the hideKeyboard() function to hide the keyboard whenever you need to, without even having to remember the code to do so programmatically.
 
-Never let anyone tell you that you are ugly. Anyway enjoy coding! :D
+Remember, never let anyone tell you that you are ugly. Enjoy coding! :D
 
 ## Features
 ### Activity extensions
