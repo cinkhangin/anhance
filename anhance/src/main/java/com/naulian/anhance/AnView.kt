@@ -4,25 +4,28 @@ package com.naulian.anhance
 
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.card.MaterialCardView
 import kotlin.math.abs
 
-fun View.onClick(action : (view : View) -> Unit){
+fun View.onClick(action: (View) -> Unit) {
     setOnClickListener { action(it) }
 }
 
-fun View.onLongClick(action: (view: View) -> Unit){
+fun View.onLongClick(action: (View) -> Unit) {
     setOnLongClickListener { action(it); true }
 }
 
 fun EditText.textString() = text.toString()
 fun EditText.textTrim() = textString().trim()
 
-fun MaterialToolbar.onNavClick(action : () -> Unit){
+fun MaterialToolbar.onNavClick(action: () -> Unit) {
     setNavigationOnClickListener { action() }
 }
 
@@ -47,11 +50,19 @@ fun ViewPager2.setUpScaleYPageTransformer() {
     setPageTransformer(compositePageTransformer)
 }
 
-fun ViewPager2.onPageSelected(action : (Int) -> Unit){
+fun ViewPager2.onPageSelected(action: (Int) -> Unit) {
     registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             action(position)
         }
     })
+}
+
+fun TextView.setTextColorRes(@ColorRes resId: Int) {
+    setTextColor(context.getColor(resId))
+}
+
+fun MaterialCardView.setCardBgColorRes(@ColorRes resId: Int) {
+    setCardBackgroundColor(context.getColor(resId))
 }

@@ -108,3 +108,43 @@ object AnString {
         context.showToast(message)
     }
 }
+
+inline fun loopForString(times: Int, block: (Int) -> String): String {
+    var output = ""
+    repeat(times) {
+        output += block(it)
+    }
+    return output
+}
+
+inline fun loopForString(range: IntRange, block: (Int) -> String): String {
+    val stringBuilder = StringBuilder()
+    for (i in range) {
+        stringBuilder.append(block(i))
+    }
+    return stringBuilder.toString()
+}
+
+inline fun <T> loopForString(list: ArrayList<T>, block: (T) -> String): String {
+    val stringBuilder = StringBuilder()
+    for (element in list) {
+        stringBuilder.append(block(element))
+    }
+    return stringBuilder.toString()
+}
+
+inline fun <T> loopForString(iterator: Iterator<T>, block: (T) -> String): String {
+    val stringBuilder = StringBuilder()
+    while (iterator.hasNext()) {
+        stringBuilder.append(block(iterator.next()))
+    }
+    return stringBuilder.toString()
+}
+
+inline fun loopForString(string: String, block: (Char) -> String): String {
+    val stringBuilder = StringBuilder()
+    for (char in string) {
+        stringBuilder.append(block(char))
+    }
+    return stringBuilder.toString()
+}

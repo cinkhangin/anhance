@@ -28,7 +28,7 @@ object AnReader {
         textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts")
     }
 
-    fun initialize(context: Context) {
+    fun initialize(context: Context, speechRate: Float = 1.0f) {
         textToSpeech?.let {
             return
         }
@@ -36,7 +36,7 @@ object AnReader {
         val speechListener = TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
                 textToSpeech?.language = Locale.US
-                textToSpeech?.setSpeechRate(1.0f)
+                textToSpeech?.setSpeechRate(speechRate)
 
                 val utteranceListener = object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String?) {

@@ -21,11 +21,11 @@ fun <T> nullable(any: T): T? {
 }
 
 //check if the value is not null and continue if it is not null
-inline fun <T> ifNotNull(value: T?, action : (nonNullValue : T) -> Unit){
+inline fun <T> ifNotNull(value: T?, action : (T) -> Unit){
     value?.let { action(it) }
 }
 
-inline fun <T> nullCheck(value: T?, action : (nonNullValue : T) -> Unit){
+inline fun <T> nullCheck(value: T?, action : (T) -> Unit){
     value?.let { action(it) }
 }
 
