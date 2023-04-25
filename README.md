@@ -22,7 +22,10 @@ hideKeyboard() //hide the keyboard
 ### Extensions for Assets
 
 ```kotlin
-context.readStringAsset("filename.txt") //read string from assets
+context.readStringAsset("filename.txt"){ result ->
+    result.onSuccess {}
+    result.onFailure {}
+} //read string from assets
 ```
 
 ### Extensions for Audio
@@ -162,6 +165,6 @@ repositories {
 add a dependency
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:0.3.3")
+    implementation("com.github.cinkhangin:anhance:1.0.0")
 }
 ```

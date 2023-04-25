@@ -110,11 +110,11 @@ object AnString {
 }
 
 inline fun loopForString(times: Int, block: (Int) -> String): String {
-    var output = ""
+    val stringBuilder = StringBuilder()
     repeat(times) {
-        output += block(it)
+        stringBuilder.append(block(it))
     }
-    return output
+    return stringBuilder.toString()
 }
 
 inline fun loopForString(range: IntRange, block: (Int) -> String): String {

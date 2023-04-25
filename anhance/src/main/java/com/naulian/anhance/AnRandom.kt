@@ -11,8 +11,10 @@ fun randomOf(from: Int = 0, until: Int) = AnRandom.generateInt(from, until)
 fun randomOf(from: Long = 0L, until: Long) = AnRandom.generateLong(from, until)
 fun randomFloat() = AnRandom.generateFloat()
 
+val uniqueSeed get() = AnRandom.generator()
+
 object AnRandom {
-    private val generator get() = generator()
+    val generator get() = generator()
 
     fun generateFloat() = generator.nextFloat()
 
@@ -21,7 +23,7 @@ object AnRandom {
 
 
     //private methods==================
-    private fun generator(): Random {
+    fun generator(): Random {
         val runtimeRnd = Random.nextInt(1, 1000)
         val seed = millisOfNow + runtimeRnd
         return Random(seed)
