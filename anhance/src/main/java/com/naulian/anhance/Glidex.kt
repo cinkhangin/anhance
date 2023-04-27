@@ -7,19 +7,28 @@ import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 //glide extensions
 fun loadImageWithGLide(uri: Uri, imageView: ImageView) =
-    Glide.with(imageView).load(uri).into(imageView)
+    loadWithGlide(uri, imageView)
 
 fun loadImageWithGLide(url: String, imageView: ImageView) =
-    Glide.with(imageView).load(url).into(imageView)
+    loadWithGlide(url, imageView)
 
 fun loadImageWithGLide(@DrawableRes drawable: Int, imageView: ImageView) =
-    Glide.with(imageView).load(drawable).into(imageView)
+    loadWithGlide(drawable, imageView)
 
 fun loadImageWithGLide(bitmap: Bitmap, imageView: ImageView) =
-    Glide.with(imageView).load(bitmap).into(imageView)
+    loadWithGlide(bitmap, imageView)
+
+private fun <T> loadWithGlide(image: T, imageView: ImageView) {
+    val option = RequestOptions.timeoutOf(1000 * 60)
+    Glide.with(imageView)
+        .load(image)
+        .apply(option)
+        .into(imageView)
+}
 
 //imageView extensions
 fun ImageView.loadWithGlide(uri: Uri) =
