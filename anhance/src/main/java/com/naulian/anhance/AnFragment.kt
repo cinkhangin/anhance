@@ -127,7 +127,7 @@ inline fun Fragment.initialize(block: Context.() -> Unit) {
     block(requireContext())
 }
 
-fun <T> Fragment.loadUi(binding: T, action: T.() -> Unit) = action(binding)
+fun <T> loadUi(binding: T, action: T.() -> Unit) = action(binding)
 
 fun Fragment.loadData(block: suspend CoroutineScope.() -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
@@ -165,7 +165,7 @@ fun Fragment.openGallery(
     }
 }
 
-fun Fragment.launchGallery(content: ActivityResultLauncher<Intent>) {
+fun launchGallery(content: ActivityResultLauncher<Intent>) {
     val intent = Intent(Intent.ACTION_PICK)
     intent.type = "image/*"
     content.launch(intent)
@@ -184,6 +184,7 @@ fun Fragment.setLightStatusBar(light: Boolean) {
     requireActivity().setLightStatusBar(light)
 }
 
+@Suppress("DEPRECATION")
 fun Activity.setLightStatusBar(light: Boolean) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         window.insetsController?.apply {

@@ -34,6 +34,9 @@ fun String.injectLast(number: Number) = AnString.addMoreLast(number.toString(), 
 fun String.inject(string: String) = AnString.addMoreFirst(string, this)
 fun String.inject(number: Number) = AnString.addMoreFirst(number.toString(), this)
 
+//to avoid SetTextI18n warning
+fun str(string: String) = string.trim()
+
 object AnString {
     private const val lowerCases = "abcdefghijklmnopqrstuvwxyz"
     private const val upperCases = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

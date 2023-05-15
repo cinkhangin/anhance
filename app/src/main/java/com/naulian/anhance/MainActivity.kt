@@ -13,8 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         binding?.apply {
-            val url = "https://firebasestorage.googleapis.com/v0/b/atoz-cloud.appspot.com/o/flashcards%2FLevel%203%2Fimage.jpg?alt=media&token=29b319f7-a459-4a53-8ce2-bbe90d542885"
-            imageView.loadWithGlide(url)
+            imageView.loadWithGlide(R.drawable.smoke)
 
             btnMain.onClick {
                 txtMain.text = ""

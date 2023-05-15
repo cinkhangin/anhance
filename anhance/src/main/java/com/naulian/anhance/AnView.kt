@@ -2,10 +2,12 @@
 
 package com.naulian.anhance
 
+import android.graphics.Color
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -65,4 +67,28 @@ fun TextView.setTextColorRes(@ColorRes resId: Int) {
 
 fun MaterialCardView.setCardBgColorRes(@ColorRes resId: Int) {
     setCardBackgroundColor(context.getColor(resId))
+}
+
+fun CardView.setCardBgHex(hexString: String) {
+    val color = Color.parseColor(hexString)
+    setCardBackgroundColor(color)
+}
+
+fun View.setBgColorHex(hexColor: String) {
+    setBackgroundColor(hexColor.toColorInt())
+}
+
+fun String.toColorInt(): Int {
+    if (!startsWith("#")) {
+        logError("toColorInt", "Error : '$this' is not a hex string")
+        return Color.WHITE
+    }
+
+    return when (length) {
+        4, 7, 9 -> Color.parseColor(this)
+        else -> {
+            logError("toColorInt", "Error : '$this' is not a hex string")
+            Color.WHITE
+        }
+    }
 }
