@@ -2,7 +2,6 @@
 
 package com.naulian.anhance
 
-import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -27,7 +26,7 @@ fun <T> CoroutineScope.observe(data: Flow<T>, action: suspend (T) -> Unit) {
     data.onEach { action(it) }.launchIn(this)
 }
 
-fun Application.applicationScope(action: suspend CoroutineScope.() -> Unit) {
+fun applicationScope(action: suspend CoroutineScope.() -> Unit) {
     CoroutineScope(SupervisorJob()).launch {
         action(this)
     }
