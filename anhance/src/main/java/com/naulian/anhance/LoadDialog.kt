@@ -3,7 +3,6 @@
 package com.naulian.anhance
 
 import android.content.Context
-import android.service.quicksettings.Tile
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -13,15 +12,15 @@ fun Fragment.showLoadingDialog(message: String = "Please wait") {
     AnLoadingDialog.show(requireContext(), message)
 }
 
-fun Fragment.dismissLoadingDialog() {
+fun dismissLoadingDialog() {
     AnLoadingDialog.dismiss()
 }
 
-fun Fragment.updateLoadingMessage(message: String){
+fun updateLoadingMessage(message: String){
     AnLoadingDialog.updateMessage(message)
 }
 
-fun Fragment.updateLoadingTitle(title: String){
+fun updateLoadingTitle(title: String){
     AnLoadingDialog.updateTitle(title)
 }
 
