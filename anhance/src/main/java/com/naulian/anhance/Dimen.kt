@@ -4,18 +4,24 @@ package com.naulian.anhance
 
 import android.content.res.Resources
 
-fun Float.toPx() = toInt().toPx()
-fun Float.toDp() = toInt().toDp()
 
-fun Int.toPx(): Float {
+val Float.px get() = toPx()
+val Float.dp get() = toDp()
+val Int.px get() = toPx()
+val Int.dp get() = toDp()
+
+fun Int.toPx() = toFloat().toPx()
+fun Int.toDp() = toFloat().toDp()
+
+fun Float.toPx(): Float {
     val resource = Resources.getSystem()
     val density = resource.displayMetrics.density
-    return this * (density / 160)
+    return this * density
 }
 
-fun Int.toDp(): Float {
+fun Float.toDp(): Float {
     val resources = Resources.getSystem()
     val density = resources.displayMetrics.density
-    return this / (density / 160)
+    return this / density
 }
 

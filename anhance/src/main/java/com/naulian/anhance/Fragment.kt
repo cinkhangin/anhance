@@ -4,7 +4,6 @@ package com.naulian.anhance
 
 import android.Manifest
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -202,16 +201,6 @@ fun Activity.setLightStatusBar(light: Boolean) {
 
 fun Fragment.openTelegramUser(username: String) {
     requireActivity().openTelegramUser(username)
-}
-
-fun Activity.openTelegramUser(username: String) {
-    val telegram = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$username"))
-    telegram.setPackage("org.telegram.messenger")
-    try {
-        startActivity(telegram)
-    } catch (e: ActivityNotFoundException) {
-        showToast("Telegram not installed or username not found")
-    }
 }
 
 fun Fragment.openMic(request : ActivityResultLauncher<String>, action: ()-> Unit){
