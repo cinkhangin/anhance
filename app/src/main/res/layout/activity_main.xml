@@ -7,15 +7,15 @@
     tools:context=".MainActivity">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="16dp"
-        tools:src="@color/black"
         android:contentDescription="@string/image"
-        android:id="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@color/black" />
 
     <Button
         android:id="@+id/btnMain"
@@ -39,5 +39,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.naulian.anhance.views.LoadScreenView
+        android:id="@+id/loadScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:elevation="6dp"
+        android:text="@string/app_name"
+        android:textColor="@android:color/holo_green_light"
+        android:textSize="48sp"
+        app:progressColor="@android:color/holo_orange_dark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

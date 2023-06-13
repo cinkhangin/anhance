@@ -8,17 +8,15 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-@Deprecated("Use context.readStringAsset(filename){ result : Result<String> -> } instead")
 fun Context.readStringAsset(filename: String): String {
-    var string = ""
-    try {
-        string = assets.open(filename)
+    return try {
+         assets.open(filename)
             .bufferedReader()
             .use { it.readText() }
     } catch (e: IOException) {
         e.printStackTrace()
+        ""
     }
-    return string
 }
 
 fun Context.readStringAsset(filename: String, action: (Result<String>) -> Unit) {
@@ -33,8 +31,6 @@ fun Context.readStringAsset(filename: String, action: (Result<String>) -> Unit) 
     }
 }
 
-//deprecate in 0.3.0
-@Deprecated("Use context.readAssetFd(filename){ result : Result<AssetFileDescriptor> -> } instead")
 fun Context.readAsset(filename: String): AssetFileDescriptor? {
     return try {
         assets.openFd(filename)

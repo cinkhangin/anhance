@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LoadScreenView">
+        <attr name="android:text" format="string" />
+        <attr name="android:textColor" format="color" />
+        <attr name="android:textSize" format="dimension" />
+        <attr name="progressColor" format="color" />
+    </declare-styleable>
+</resources>

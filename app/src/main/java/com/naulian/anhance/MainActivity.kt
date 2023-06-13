@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
             imageView.loadWithGlide(R.drawable.smoke)
 
             btnMain.onClick {
-                txtMain.text = ""
+                loadScreen.show()
             }
         }
     }
