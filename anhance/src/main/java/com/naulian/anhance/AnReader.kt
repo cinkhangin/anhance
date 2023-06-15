@@ -9,6 +9,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
+fun initializeReader(context: Context, speechRate: Float = 1.0f) {
+    AnReader.initialize(context, speechRate)
+}
+
+fun readText(text: String) {
+    AnReader.read(text)
+}
+
+fun readText(text: String, speechRate: Float) {
+    AnReader.read(text, speechRate)
+}
+
 object AnReader {
     private var textToSpeech: TextToSpeech? = null
 
@@ -23,7 +35,13 @@ object AnReader {
     private var utteranceProgress = MutableStateFlow(STATE_INITIALIZE)
     val utteranceProgressFlow = utteranceProgress.asStateFlow()
 
-    fun read(text: String, speechRate: Float = 1.0f) {
+    private var speechRate = 1.0f
+
+    fun read(text: String) {
+        read(text, speechRate)
+    }
+
+    fun read(text: String, speechRate: Float) {
         textToSpeech?.setSpeechRate(speechRate)
         textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts")
     }
@@ -36,6 +54,8 @@ object AnReader {
         val speechListener = TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
                 textToSpeech?.language = Locale.US
+
+                this.speechRate = speechRate
                 textToSpeech?.setSpeechRate(speechRate)
 
                 val utteranceListener = object : UtteranceProgressListener() {
