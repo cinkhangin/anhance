@@ -34,11 +34,12 @@ private fun Bitmap.saveQ(context: Context) {
 
         try {
             imageUri?.let {
-                val os = resolver.openOutputStream(imageUri)
-                compress(Bitmap.CompressFormat.JPEG, 100, os)
-                os?.flush()
-                os?.close()
-                context.showToast("Image Saved")
+                 resolver.openOutputStream(it)?.apply {
+                     compress(Bitmap.CompressFormat.JPEG, 100, this)
+                     flush()
+                     close()
+                     context.showToast("Image Saved")
+                 }
             }
         } catch (e: Exception) {
             context.showToast("Image Not Not  Saved: ${e.message}")

@@ -20,7 +20,15 @@ fun View.onClick(action: (View) -> Unit) {
     setOnClickListener { action(it) }
 }
 
+fun View.doOnClick(action: (View) -> Unit) {
+    setOnClickListener { action(it) }
+}
+
 fun View.onLongClick(action: (View) -> Unit) {
+    setOnLongClickListener { action(it); true }
+}
+
+fun View.doOnLongClick(action: (View) -> Unit) {
     setOnLongClickListener { action(it); true }
 }
 

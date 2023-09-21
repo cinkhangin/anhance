@@ -19,22 +19,6 @@ const val MINUTE: Long = 60_000L
 const val SECOND: Long = 1000L
 const val MILLI: Long = 1L
 
-//extract units like 1038 seconds or 72 hours
-@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.secondCount"))
-val Long.toSecond get() = this safeDiv SECOND
-@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.minuteCount"))
-val Long.toMinute get() = this safeDiv MINUTE
-@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.hourCount"))
-val Long.toHour get() = this safeDiv HOUR
-@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.dayCount"))
-val Long.toDay get() = this safeDiv DAY
-@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.weekCount"))
-val Long.toWeek get() = this safeDiv WEEK
-@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.monthCount"))
-val Long.toMonth get() = this safeDiv MONTH
-@Deprecated("Deprecate for readability since 0.3.0", ReplaceWith("Long.yearCount"))
-val Long.toYear get() = this safeDiv YEAR
-
 val Long.secondCount get() = this safeDiv SECOND
 val Long.minuteCount get() = this safeDiv MINUTE
 val Long.hourCount get() = this safeDiv HOUR
@@ -69,9 +53,6 @@ private val timeZone get() = TimeZone.currentSystemDefault()
 private val localDate = systemClock.todayIn(timeZone)
 private val localDateTime = now.toLocalDateTime(timeZone)
 
-//get current millis
-@Deprecated("", ReplaceWith("use millisOfNow"))
-val millisNow get() = millisOfNow
 val millisOfNow get() = System.currentTimeMillis()
 val intOfDay get() = localDate.dayOfMonth
 val intOfMonth get() = localDate.monthNumber
