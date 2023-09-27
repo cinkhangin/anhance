@@ -44,7 +44,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     //navigation
-    val navVersion = "2.7.2"
+    val navVersion = "2.7.3"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
@@ -70,7 +70,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 groupId = "com.github.cinkhangin"
                 artifactId = "anhance"
-                version = "0.3.2"
+                version = "0.3.3"
                 from(components["release"])
             }
         }

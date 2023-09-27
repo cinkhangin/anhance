@@ -4,6 +4,7 @@ package com.naulian.anhance
 
 import android.content.ClipData
 import android.content.Context
+import android.os.Build
 import androidx.core.text.isDigitsOnly
 
 fun String.toSafeInt() = if (this.isDigitsOnly()) this.toInt() else 0
@@ -107,8 +108,10 @@ object AnString {
         val data = ClipData.newPlainText("clip", string)
         context.clipboardManager.setPrimaryClip(data)
 
-        val message = if (string.length > 20) "Copied" else string
-        context.showToast(message)
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+            val message = if (string.length > 20) "Copied" else string
+            context.showToast(message)
+        }
     }
 }
 
