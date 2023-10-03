@@ -15,7 +15,7 @@ fun String.size(dp : Int) : SpannableString {
     return span
 }
 fun String.html() = HtmlCompat.fromHtml(this, HTML_MODE_COMPACT)
-fun html(string: String) = HtmlCompat.fromHtml(string, HTML_MODE_COMPACT)
+fun htmlSpanned(string: String) = HtmlCompat.fromHtml(string, HTML_MODE_COMPACT)
 fun String.color(colorHex: String) = "<font color=$colorHex>$this</font>"
 fun String.colorHtml(colorHex : String) : Spanned {
     return this.color(colorHex).html()
