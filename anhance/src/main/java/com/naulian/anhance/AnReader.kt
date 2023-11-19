@@ -13,12 +13,12 @@ fun initializeReader(context: Context, speechRate: Float = 1.0f) {
     AnReader.initialize(context, speechRate)
 }
 
-fun readText(text: String) {
-    AnReader.read(text)
+fun readText(text: String, onError: (String) -> Unit = {}) {
+    AnReader.read(text, onError)
 }
 
-fun readText(text: String, speechRate: Float) {
-    AnReader.read(text, speechRate)
+fun readText(text: String, speechRate: Float, onError: (String) -> Unit = {}) {
+    AnReader.read(text, speechRate, onError)
 }
 
 object AnReader {
@@ -36,14 +36,17 @@ object AnReader {
     val utteranceProgressFlow = utteranceProgress.asStateFlow()
 
     private var speechRate = 1.0f
+    private var error: String? = null
 
-    fun read(text: String) {
-        read(text, speechRate)
+    fun read(text: String, onError: (String) -> Unit = {}) {
+        read(text, speechRate, onError)
     }
 
-    fun read(text: String, speechRate: Float) {
-        textToSpeech?.setSpeechRate(speechRate)
-        textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts")
+    fun read(text: String, speechRate: Float, onError: (String) -> Unit = {}) {
+        error?.let { onError(it) } ?: kotlin.run {
+            textToSpeech?.setSpeechRate(speechRate)
+            textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts")
+        }
     }
 
     fun initialize(context: Context, speechRate: Float = 1.0f) {
@@ -54,6 +57,14 @@ object AnReader {
         val speechListener = TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS) {
                 textToSpeech?.language = Locale.US
+
+                val result = textToSpeech?.setLanguage(Locale.ENGLISH)
+
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    context.showToast("Language is not supported.")
+                    error = "Language is not supported."
+                    return@OnInitListener
+                }
 
                 this.speechRate = speechRate
                 textToSpeech?.setSpeechRate(speechRate)
@@ -74,7 +85,11 @@ object AnReader {
 
                 textToSpeech?.setOnUtteranceProgressListener(utteranceListener)
                 isInitialized.value = true
+                error = null
                 boostPerformance()
+            } else {
+                context.showToast("Text-to-Speech is not available")
+                error = "Text-to-Speech is not available"
             }
         }
         textToSpeech = TextToSpeech(context, speechListener)

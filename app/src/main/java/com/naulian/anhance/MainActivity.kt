@@ -12,11 +12,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        initializeReader(this)
         binding?.apply {
             imageView.loadWithGlide(R.drawable.smoke)
 
             btnMain.onClick {
                 loadScreen.show()
+
+                readText("hello"){
+                   showToast(it)
+                }
             }
         }
     }

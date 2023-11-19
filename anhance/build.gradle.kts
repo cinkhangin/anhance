@@ -1,8 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-parcelize")
-    id("kotlin-kapt")
     `maven-publish`
 }
 
@@ -44,7 +42,7 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
 
     //navigation
-    val navVersion = "2.7.4"
+    val navVersion = "2.7.5"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
@@ -70,7 +68,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 groupId = "com.github.cinkhangin"
                 artifactId = "anhance"
-                version = "2023.1.0"
+                version = "2023.1.1"
                 from(components["release"])
             }
         }
