@@ -19,6 +19,34 @@ showKeyboard() //show the keyboard
 hideKeyboard() //hide the keyboard
 ```
 
+### AnEar
+AnEar is a speech recognizer extension
+```kotlin
+AnEar.listen(context){ state , text ->
+    when(state){
+        READY -> showToast("Ready")
+        BEGIN, VOLUME, PARTIAL -> Unit
+        RESULT -> showToast(text)
+        ERROR -> showToast("error")
+        END -> Unit
+    }
+}
+```
+
+### AnReader
+AnReader is a text-to-speech extension
+```kotlin
+//onCreate (Application)
+AnReader.initialize(this)
+initializeReader(this)
+
+//Read text
+AnReader.read("hello"){ //on error 
+}
+readText("hello"){ //on error 
+}
+```
+
 ### Extensions for Assets
 
 ```kotlin
