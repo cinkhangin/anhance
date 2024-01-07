@@ -1,4 +1,4 @@
-# anhance
+# anhance [![](https://jitpack.io/v/cinkhangin/anhance.svg)](https://jitpack.io/#cinkhangin/anhance)
 
 An Android library to make life easier. 
 
