@@ -1,4 +1,4 @@
-# anhance
+# anhance [![](https://jitpack.io/v/cinkhangin/anhance.svg)](https://jitpack.io/#cinkhangin/anhance)
 
 An Android library to make life easier. 
 
@@ -190,9 +190,11 @@ repositories {
 }
 ```
 
-add a dependency
+add a dependency 
+
+[![](https://jitpack.io/v/cinkhangin/anhance.svg)](https://jitpack.io/#cinkhangin/anhance)
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:1.0.0")
+    implementation("com.github.cinkhangin:anhance:latest_version")
 }
 ```
