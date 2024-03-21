@@ -195,6 +195,6 @@ add a dependency
 [![](https://jitpack.io/v/cinkhangin/anhance.svg)](https://jitpack.io/#cinkhangin/anhance)
 ```kotlin
 dependencies {
-    implementation("com.github.cinkhangin:anhance:latest_version")
+    implementation("com.naulian:anhance:latest_version")
 }
 ```
