@@ -13,7 +13,7 @@ import android.speech.SpeechRecognizer
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 
-enum class EarState() {
+enum class EarState {
     READY, BEGIN, VOLUME, PARTIAL, RESULT, ERROR, END
 }
 

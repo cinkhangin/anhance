@@ -42,12 +42,12 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
 
     //navigation
-    val navVersion = "2.7.6"
+    val navVersion = "2.7.7"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
     //lifecycle
-    val lifecycleVersion = "2.6.2"
+    val lifecycleVersion = "2.7.0"
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
@@ -56,7 +56,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     //datetime
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 
     //glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
@@ -66,9 +66,9 @@ afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("release") {
-                groupId = "com.naulian.anhance"
+                groupId = "com.naulian"
                 artifactId = "anhance"
-                version = "2024.1.16"
+                version = "2024.3.0"
                 from(components["release"])
             }
         }

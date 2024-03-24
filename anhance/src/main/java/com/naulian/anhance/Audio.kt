@@ -48,6 +48,7 @@ private class AnMediaPlayer(val context: Context) {
     private var player: MediaPlayer? = null
 
     fun loadResource(res: Int) {
+        player?.release()
         player = MediaPlayer.create(context, res)
     }
 
