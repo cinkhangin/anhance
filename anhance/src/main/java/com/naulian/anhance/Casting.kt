@@ -17,8 +17,8 @@ fun roundIntOf(float: Float) = float.roundToInt()
 fun roundLongOf(float: Float) = float.roundToLong()
 
 //dimen
-fun pxOf(int: Int) = int.toPx()
-fun dpOf(int : Int) = int.toDp()
-fun pxOf(float: Float) = float.toPx()
-fun dpOf(float: Float) = float.toDp()
+fun pxOf(int: Int) = int.pxValueOfDp()
+fun dpOf(int : Int) = int.dpValueOfPx()
+fun pxOf(float: Float) = float.pxValueOfDp()
+fun dpOf(float: Float) = float.dpValueOfPx()
 

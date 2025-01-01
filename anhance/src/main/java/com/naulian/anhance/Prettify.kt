@@ -11,7 +11,7 @@ private const val HTML_MODE_COMPACT = HtmlCompat.FROM_HTML_MODE_COMPACT
 fun String.size(dp : Int) : SpannableString {
     val span = SpannableString(this)
     val flag = SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-    span.setSpan(AbsoluteSizeSpan(dp.toPx().toInt()), 0, this.length, flag)
+    span.setSpan(AbsoluteSizeSpan(dp.pxValueOfDp().toInt()), 0, this.length, flag)
     return span
 }
 fun String.html() = HtmlCompat.fromHtml(this, HTML_MODE_COMPACT)

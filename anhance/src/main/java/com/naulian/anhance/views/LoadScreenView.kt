@@ -17,7 +17,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import androidx.core.widget.ContentLoadingProgressBar
 import com.naulian.anhance.R
-import com.naulian.anhance.dp
+import com.naulian.anhance.dpValueOfPx
 
 class LoadScreenView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
@@ -34,7 +34,7 @@ class LoadScreenView @JvmOverloads constructor(context: Context, attrs: Attribut
         val textColor = typedArray.getColor(
             R.styleable.LoadScreenView_android_textColor, Color.BLACK
         )
-        val textSize = typedArray.getDimension(R.styleable.LoadScreenView_android_textSize, 14.dp)
+        val textSize = typedArray.getDimension(R.styleable.LoadScreenView_android_textSize, 14.dpValueOfPx())
         val progressColor = typedArray.getColor(
             R.styleable.LoadScreenView_progressColor, Color.BLACK
         )
