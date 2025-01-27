@@ -1,7 +1,9 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    `maven-publish`
+    id("com.vanniktech.maven.publish")
 }
 
 android {
@@ -53,7 +55,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 
     //datastore
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
 
     //datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
@@ -62,15 +64,42 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("release") {
-                groupId = "com.naulian"
-                artifactId = "anhance"
-                version = "2025.1.0"
-                from(components["release"])
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
+
+    signAllPublications()
+
+    coordinates(
+        groupId = "com.naulian",
+        artifactId = "anhance",
+        version = "2025.1.0"
+    )
+    //./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
+
+    pom {
+        name.set("Anhance")
+        description.set("Android extensions library to make life easier")
+        inceptionYear.set("2023")
+        url.set("https://github.com/cinkhangin/anhance/")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
             }
+        }
+        developers {
+            developer {
+                id.set("naulian")
+                name.set("Naulian")
+                url.set("https://github.com/cinkhangin/")
+                email.set("hello@naulian.com")
+            }
+        }
+        scm {
+            url.set("https://github.com/cinkhangin/anhance/")
+            connection.set("scm:git:git://github.com/cinkhangin/anhance.git")
+            developerConnection.set("scm:git:ssh://git@github.com/cinkhangin/anhance.git")
         }
     }
 }
