@@ -1,4 +1,7 @@
-# anhance [![](https://jitpack.io/v/cinkhangin/anhance.svg)](https://jitpack.io/#cinkhangin/anhance)
+![Maven Central Version](https://img.shields.io/maven-central/v/com.naulian/anhance?versionPrefix=2025.1.0&style=for-the-badge&label=Maven)
+
+
+# anhance 
 
 An Android library to make life easier. 
 
@@ -182,17 +185,9 @@ loadData {
 ## Implementation
 ### Gradle
 
-- Add the Jitpack repository :
-
-```groovy
-repositories {
-  maven { url 'https://jitpack.io' }
-}
-```
-
 add a dependency 
 
-[![](https://jitpack.io/v/cinkhangin/anhance.svg)](https://jitpack.io/#cinkhangin/anhance)
+![Maven Central Version](https://img.shields.io/maven-central/v/com.naulian/anhance?versionPrefix=2025.1.0&style=for-the-badge&label=Maven)
 ```kotlin
 dependencies {
     implementation("com.naulian:anhance:latest_version")
