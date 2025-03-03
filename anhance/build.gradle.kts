@@ -39,29 +39,12 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-
-    //navigation
-    val navVersion = "2.8.5"
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-
-    //lifecycle
-    val lifecycleVersion = "2.8.7"
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-
-    //datastore
-    implementation("androidx.datastore:datastore-preferences:1.1.2")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
 
     //datetime
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
-
-    //glide
-    implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation(libs.kotlinx.datetime)
 }
 
 mavenPublishing {
@@ -72,7 +55,7 @@ mavenPublishing {
     coordinates(
         groupId = "com.naulian",
         artifactId = "anhance",
-        version = "2025.1.0"
+        version = "2025.3.0"
     )
     //./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 

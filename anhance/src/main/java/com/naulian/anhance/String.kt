@@ -38,22 +38,12 @@ fun String.inject(number: Number) = AnString.addMoreFirst(number.toString(), thi
 //to avoid SetTextI18n warning
 fun str(string: String) = string.trim()
 
-object AnString {
-    private const val lowerCases = "abcdefghijklmnopqrstuvwxyz"
-    private const val upperCases = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    private const val decimals = "0123456789"
-    private const val symbols = "~`!@#\$%^&*()_-+={[}]|\\:;\"'<,>.?/"
+const val LOWERS = "abcdefghijklmnopqrstuvwxyz"
+const val UPPERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const val DECIMALS = "0123456789"
+const val SYMBOLS = "~`!@#\$%^&*()_-+={[}]|\\:;\"'<,>.?/"
 
-    private val stars = hashMapOf(
-        3 to "***",
-        4 to "****",
-        5 to "*****",
-        6 to "******",
-        7 to "*******",
-        8 to "********",
-        9 to "*********",
-        10 to "**********",
-    )
+object AnString {
     private val words = arrayListOf(
         "fuck",
         "sex",
@@ -64,7 +54,11 @@ object AnString {
         var output = text
         words.forEach { word ->
             if (word in text) {
-                val star = stars[word.length] ?: "***"
+                val star = buildString {
+                    repeat(word.length) {
+                        append("*")
+                    }
+                }
                 output = output.replace(word, star)
             }
         }
@@ -76,10 +70,10 @@ object AnString {
 
         val source = loopForString(example) { char ->
             when (char) {
-                in lowerCases -> lowerCases
-                in upperCases -> upperCases
-                in decimals -> decimals
-                in symbols -> symbols
+                in LOWERS -> LOWERS
+                in UPPERS -> UPPERS
+                in DECIMALS -> DECIMALS
+                in SYMBOLS -> SYMBOLS
                 else -> ""
             }
         }
@@ -115,42 +109,32 @@ object AnString {
     }
 }
 
-inline fun loopForString(times: Int, block: (Int) -> String): String {
-    val stringBuilder = StringBuilder()
+inline fun loopForString(times: Int, block: (Int) -> String) = buildString {
     repeat(times) {
-        stringBuilder.append(block(it))
+        append(block(it))
     }
-    return stringBuilder.toString()
 }
 
-inline fun loopForString(range: IntRange, block: (Int) -> String): String {
-    val stringBuilder = StringBuilder()
+inline fun loopForString(range: IntRange, block: (Int) -> String) = buildString {
     for (i in range) {
-        stringBuilder.append(block(i))
+        append(block(i))
     }
-    return stringBuilder.toString()
 }
 
-inline fun <T> loopForString(list: ArrayList<T>, block: (T) -> String): String {
-    val stringBuilder = StringBuilder()
+inline fun <T> loopForString(list: ArrayList<T>, block: (T) -> String) = buildString {
     for (element in list) {
-        stringBuilder.append(block(element))
+        append(block(element))
     }
-    return stringBuilder.toString()
 }
 
-inline fun <T> loopForString(iterator: Iterator<T>, block: (T) -> String): String {
-    val stringBuilder = StringBuilder()
+inline fun <T> loopForString(iterator: Iterator<T>, block: (T) -> String) = buildString {
     while (iterator.hasNext()) {
-        stringBuilder.append(block(iterator.next()))
+        append(block(iterator.next()))
     }
-    return stringBuilder.toString()
 }
 
-inline fun loopForString(string: String, block: (Char) -> String): String {
-    val stringBuilder = StringBuilder()
+inline fun loopForString(string: String, block: (Char) -> String) = buildString {
     for (char in string) {
-        stringBuilder.append(block(char))
+        append(block(char))
     }
-    return stringBuilder.toString()
 }

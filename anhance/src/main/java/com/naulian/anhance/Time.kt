@@ -13,9 +13,9 @@ import java.util.Locale
 const val YEAR: Long = 31_536_000_000L //365 days
 const val MONTH: Long = 2_592_000_000L //30 days
 const val WEEK: Long = 604_800_800L //7 days
-const val DAY: Long = 86_400_000L
-const val HOUR: Long = 3_600_000L
-const val MINUTE: Long = 60_000L
+const val DAY: Long = 86_400_000L //24 hour
+const val HOUR: Long = 3_600_000L //60 minutes
+const val MINUTE: Long = 60_000L //60 seconds
 const val SECOND: Long = 1000L
 const val MILLI: Long = 1L
 
