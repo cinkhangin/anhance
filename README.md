@@ -14,13 +14,6 @@ However, Anhance makes it easier to build apps faster and more efficiently. For 
 Remember, never let anyone tell you that you are ugly. Enjoy coding! :D
 
 ## Features
-### Activity extensions
-
-```kotlin
-showToast("hi mom!") //show a toast
-showKeyboard() //show the keyboard
-hideKeyboard() //hide the keyboard
-```
 
 ### AnEar
 AnEar is a speech recognizer extension
@@ -89,25 +82,6 @@ val padding = 16.toPx() //convert 16dp to px
 val margin = 24.toDp() //convert 24px to dp
 ```
 
-### Fragment extensions
-```kotlin
-showToast("hi mom!")
-setStatusBarColorResource(R.color.primary) //change status bar's color
-val color = getColor(R.color.primary) //change resource color into color
-setStatusBarColor(color) //change status bar's color
-showKeyboard() //show keyboard
-hideKeyboard() //hide keyboard
-showLoadingDialog("Loading...") //show a loading dialog
-dismissLoadingDialog() //dismiss the loading dialog
-```
-
-### `AnStore` for easy DataStore Setup
-
-```kotlin
-//inside coroutine scope
-val level = context.readInt("level", 0) //read
-context.writeInt("level", level) //write
-```
 
 ### `AnRandom` 
 - Kotlin Random(without seed) will generate the same random sequence of result
@@ -118,22 +92,6 @@ val random = Random(millisOfNow).nextInt(0 , 10)
 //But anhance is shorter
 val random2 = randomOf(0,  10)
 val randomFloat = randomFloat()
-```
-
-### `AnDayNight` for easy App Theme
-
-```kotlin
-runLightTheme() //set Light theme
-runNightTheme() //set Dark theme
-//why night but not dark? because light/night
-//if you want to change theme and save it
-context.installLightTheme() 
-context.installNightTheme()
-context.installSystemTheme() //follow system
-//get current theme
-getCurrentTheme()
-context.isNightMode()
-context.isLightMode()
 ```
 
 ### Extensions for files
@@ -152,35 +110,6 @@ val b = "abc".toSafeInt() //0
 "fnck you".censor() //censor a string //**** you
 ```
 
-I also added these extensions to make my codes shorter
-```kotlin
-button.onClick{ context.showToast("hi mom!") } //onClick is just setOnClickListener{}
-button2.onLongClick{ context.showToast("hi mom!") } //setOnLongClickListener{}
-```
-
-and a bunch of extensions that I added to use for my projects
-```kotlin
-//without anhance (inside a fragment)
-viewLifecycleOwner.lifecycleScope.launch {
-    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.myFlow.onEach { 
-          //observe data changes here
-        }.launchIn(scope)
-        viewModel.myFlow2.onEach {
-          //observe data changes here
-        }.launchIn(scope)
-    }
-}
-//with anhance (inside a fragment)
-loadData {
-    observe(viewModel.myFlow){ 
-      //observe data changes here
-    }
-    observe(viewModel.myFlow2){
-      //observe data changes here
-    }
-}
-```
 
 ## Implementation
 ### Gradle
