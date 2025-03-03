@@ -2,16 +2,12 @@
 
 package com.naulian.anhance
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 
 enum class EarState {
     READY, BEGIN, VOLUME, PARTIAL, RESULT, ERROR, END
@@ -92,43 +88,5 @@ object AnEar {
         speechRecognizer?.stopListening()
         speechRecognizer?.destroy()
 
-    }
-
-    fun micAnimation(view: View): AnimatorSet {
-        val animatorSet = AnimatorSet()
-        val object1 = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.2f, 0.8f, 1f)
-        object1.repeatMode = ObjectAnimator.RESTART
-        object1.repeatCount = ObjectAnimator.INFINITE
-
-        val object2 = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.2f, 0.8f, 1f)
-
-        object2.repeatMode = ObjectAnimator.RESTART
-        object2.repeatCount = ObjectAnimator.INFINITE
-
-        animatorSet.playTogether(object1, object2)
-        animatorSet.duration = 1500
-        animatorSet.interpolator = AccelerateDecelerateInterpolator()
-        return animatorSet
-    }
-
-    fun rippleAnimation(view: View): AnimatorSet {
-        val animatorSet = AnimatorSet()
-        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 2f)
-        scaleX.repeatMode = ObjectAnimator.RESTART
-        scaleX.repeatCount = ObjectAnimator.INFINITE
-
-        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 2f)
-
-        scaleY.repeatMode = ObjectAnimator.RESTART
-        scaleY.repeatCount = ObjectAnimator.INFINITE
-
-        val alpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f)
-        alpha.repeatMode = ObjectAnimator.RESTART
-        alpha.repeatCount = ObjectAnimator.INFINITE
-
-        animatorSet.playTogether(scaleX, scaleY, alpha)
-        animatorSet.duration = 1500
-        animatorSet.interpolator = AccelerateDecelerateInterpolator()
-        return animatorSet
     }
 }

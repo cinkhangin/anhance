@@ -1,14 +1,15 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     compileSdk = 35
-    namespace = "com.naulian.anhance"
+    namespace = "com.example.anhance"
 
     defaultConfig {
-        applicationId = "com.naulian.anhance"
+        applicationId = "com.example.anhance"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -31,18 +32,33 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
     }
-
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
 
-    implementation(fileTree("dir" to "libs", "include" to listOf("*.jar")))
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
+
     implementation(project(":anhance"))
 }

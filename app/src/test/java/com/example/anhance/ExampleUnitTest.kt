@@ -1,9 +1,8 @@
-package com.naulian.anhance
+package com.example.anhance
 
 import org.junit.Test
 
 import org.junit.Assert.*
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -13,8 +12,8 @@ import kotlin.time.Duration.Companion.seconds
 class ExampleUnitTest {
     @Test
     fun test(){
-        assertEquals(3 , 3001L.toSecond)
-        assertEquals(0 , 0L.toSecond)
+        assertEquals(3 , 3001L)
+        assertEquals(0 , 0L)
     }
 
 }

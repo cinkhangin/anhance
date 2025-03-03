@@ -2,7 +2,7 @@
 
 package com.naulian.anhance
 
-import java.util.*
+import java.util.SortedMap
 
 fun <T> List<T>.toArrayList() = ArrayList(this)
 fun <K, V> HashMap<K, V>.toArrayList() = ArrayList(this.values)

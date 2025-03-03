@@ -7,7 +7,7 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.*
+import java.util.Locale
 
 fun initializeReader(context: Context, speechRate: Float = 1.0f) {
     AnReader.initialize(context, speechRate)

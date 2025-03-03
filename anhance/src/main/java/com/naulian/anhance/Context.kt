@@ -39,7 +39,3 @@ val Context.isInternetAvailable
         }
         return availability ?: false
     }
-
-fun Context.showToast(message: String) {
-    showTextToast(this, message)
-}
