@@ -16,3 +16,7 @@ fun Context.showToast(message: String?) {
 fun toastError(context: Context, throwable: Throwable?) {
     context.showToast(throwable?.message ?: "Error")
 }
+
+fun Context.toastError(throwable: Throwable?) {
+    toastError(this, throwable)
+}

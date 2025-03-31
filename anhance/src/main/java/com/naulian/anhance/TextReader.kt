@@ -10,18 +10,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.util.Locale
 
 fun initializeReader(context: Context, speechRate: Float = 1.0f) {
-    AnReader.initialize(context, speechRate)
+    TextReader.initialize(context, speechRate)
 }
 
 fun readText(text: String, onError: (String) -> Unit = {}) {
-    AnReader.read(text, onError)
+    TextReader.read(text, onError)
 }
 
 fun readText(text: String, speechRate: Float, onError: (String) -> Unit = {}) {
-    AnReader.read(text, speechRate, onError)
+    TextReader.read(text, speechRate, onError)
 }
 
-object AnReader {
+object TextReader {
     private var textToSpeech: TextToSpeech? = null
 
     const val STATE_INITIALIZE = 0

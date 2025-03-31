@@ -87,6 +87,5 @@ object AnEar {
         listening = false
         speechRecognizer?.stopListening()
         speechRecognizer?.destroy()
-
     }
 }

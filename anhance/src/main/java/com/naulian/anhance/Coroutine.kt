@@ -2,8 +2,6 @@
 
 package com.naulian.anhance
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
@@ -22,8 +20,4 @@ fun <T> CoroutineScope.observe(
 
 fun applicationScope(action: suspend CoroutineScope.() -> Unit) =
     CoroutineScope(SupervisorJob()).launch { action(this) }
-
-fun AppCompatActivity.activityScope(
-    action: suspend CoroutineScope.() -> Unit
-) = lifecycleScope.launch { action(this) }
 

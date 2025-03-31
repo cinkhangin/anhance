@@ -8,10 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.naulian.anhance.AudioPlayer
 import com.naulian.anhance.initializeReader
-import com.naulian.anhance.readText
 
 
 class MainActivity : ComponentActivity() {
@@ -23,8 +29,21 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Button(onClick = { readText("Hello World") }) {
-                        Text(text = "Read Hello World")
+
+                    val context = LocalContext.current
+                    var buttonText by remember { mutableStateOf("Listen") }
+
+                    LaunchedEffect(Unit) {
+                        AudioPlayer.load(context, R.raw.be_the_change)
+                    }
+
+                    Button(onClick = {
+                        AudioPlayer.play(context = context, resId = R.raw.be_the_change){
+                            buttonText = "Listen"
+                        }
+                        buttonText = "Playing"
+                    }) {
+                        Text(text = buttonText)
                     }
                 }
             }
