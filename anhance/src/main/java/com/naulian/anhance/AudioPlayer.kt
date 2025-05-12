@@ -87,5 +87,4 @@ private class AnMediaPlayer(val context: Context) {
     fun stop() {
         player?.stop()
     }
-
 }

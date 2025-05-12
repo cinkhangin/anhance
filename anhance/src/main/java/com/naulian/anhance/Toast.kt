@@ -13,10 +13,10 @@ fun Context.showToast(message: String?) {
     showTextToast(this, message)
 }
 
-fun toastError(context: Context, throwable: Throwable?) {
+fun showToastError(context: Context, throwable: Throwable?) {
     context.showToast(throwable?.message ?: "Error")
 }
 
 fun Context.toastError(throwable: Throwable?) {
-    toastError(this, throwable)
+    showToastError(this, throwable)
 }
