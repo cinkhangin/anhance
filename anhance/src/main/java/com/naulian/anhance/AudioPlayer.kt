@@ -13,6 +13,8 @@ object AudioPlayer {
 
     private const val DEFAULT_PLAYER = "default_player"
 
+    private val defaultPlayer get() = keyMap[DEFAULT_PLAYER]
+
     fun load(context: Context, resId: Int, key: String = DEFAULT_PLAYER) {
         AnMediaPlayer(context).apply {
             createFromRes(resId)
@@ -28,23 +30,35 @@ object AudioPlayer {
     }
 
     fun play(context: Context, resId: Int, onComplete: () -> Unit = {}) {
-        load(context = context, resId = resId, key = DEFAULT_PLAYER)
-        play(DEFAULT_PLAYER, onComplete)
+        if (resId == defaultPlayer?.resId) {
+            stop()
+        }
+
+        load(context = context, resId = resId)
+        play(onComplete =  onComplete)
     }
 
     fun play(context: Context, fileName: String, onComplete: () -> Unit = {}) {
-        load(context = context, fileName = fileName, key = DEFAULT_PLAYER)
-        play(DEFAULT_PLAYER, onComplete)
+        if (fileName == defaultPlayer?.fileName) {
+            stop()
+        }
+        load(context = context, fileName = fileName)
+        play(onComplete =  onComplete)
     }
 
     fun play(key: String = DEFAULT_PLAYER, onComplete: () -> Unit = {}) {
-        keyMap[key]?.apply {
-            play()
-            setOnCompletionListener(onComplete)
+        keyMap[key]?.let { player ->
+
+            if (player.isPlaying) {
+                player.stop()
+            }
+
+            player.play()
+            player.setOnCompletionListener(onComplete)
         }
     }
 
-    fun stop(key: String = DEFAULT_PLAYER){
+    fun stop(key: String = DEFAULT_PLAYER) {
         keyMap[key]?.stop()
     }
 
@@ -61,7 +75,15 @@ object AudioPlayer {
 private class AnMediaPlayer(val context: Context) {
     private var player: MediaPlayer? = null
 
+    val isPlaying get() = player?.isPlaying == true
+    var resId = 0
+        private set
+
+    var fileName = ""
+        private set
+
     fun createFromRes(res: Int): MediaPlayer {
+        resId = res
         player?.release()
         return MediaPlayer.create(context, res).also { player = it }
     }
@@ -71,6 +93,7 @@ private class AnMediaPlayer(val context: Context) {
     }
 
     fun createFromAsset(fileName: String): MediaPlayer {
+        this.fileName = fileName
         return MediaPlayer().also {
             val file = context.assets.openFd(fileName)
             it.setDataSource(file.fileDescriptor, file.startOffset, file.length)
@@ -92,7 +115,7 @@ private class AnMediaPlayer(val context: Context) {
         player?.stop()
     }
 
-    fun pause(){
+    fun pause() {
         player?.pause()
     }
 }
