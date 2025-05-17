@@ -44,7 +44,11 @@ object AudioPlayer {
         }
     }
 
-    fun remove(key: String) {
+    fun stop(key: String = DEFAULT_PLAYER){
+        keyMap[key]?.stop()
+    }
+
+    fun remove(key: String = DEFAULT_PLAYER) {
         keyMap.remove(key)
     }
 
@@ -86,5 +90,9 @@ private class AnMediaPlayer(val context: Context) {
 
     fun stop() {
         player?.stop()
+    }
+
+    fun pause(){
+        player?.pause()
     }
 }

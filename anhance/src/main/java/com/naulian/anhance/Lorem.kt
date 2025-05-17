@@ -5,8 +5,8 @@ fun String.paragraph(): String {
 }
 
 object Lorem {
-    @Suppress("MayBeConstant", "RedundantSuppression")
-    val short = "Lorem ipsum dolor sit amet"
+    @Suppress("ConstPropertyName")
+    const val short = "Lorem ipsum dolor sit amet"
 
     val normal = """
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
