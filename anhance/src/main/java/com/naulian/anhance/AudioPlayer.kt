@@ -35,7 +35,7 @@ object AudioPlayer {
         }
 
         load(context = context, resId = resId)
-        play(onComplete =  onComplete)
+        play(onComplete = onComplete)
     }
 
     fun play(context: Context, fileName: String, onComplete: () -> Unit = {}) {
@@ -43,16 +43,11 @@ object AudioPlayer {
             stop()
         }
         load(context = context, fileName = fileName)
-        play(onComplete =  onComplete)
+        play(onComplete = onComplete)
     }
 
     fun play(key: String = DEFAULT_PLAYER, onComplete: () -> Unit = {}) {
         keyMap[key]?.let { player ->
-
-            if (player.isPlaying) {
-                player.stop()
-            }
-
             player.play()
             player.setOnCompletionListener(onComplete)
         }
@@ -66,6 +61,10 @@ object AudioPlayer {
         keyMap.remove(key)
     }
 
+    fun pause(key: String = DEFAULT_PLAYER) {
+        keyMap[key]?.pause()
+    }
+
     //clear all player
     fun clear() {
         keyMap.clear()
@@ -75,7 +74,6 @@ object AudioPlayer {
 private class AnMediaPlayer(val context: Context) {
     private var player: MediaPlayer? = null
 
-    val isPlaying get() = player?.isPlaying == true
     var resId = 0
         private set
 
@@ -113,9 +111,22 @@ private class AnMediaPlayer(val context: Context) {
 
     fun stop() {
         player?.stop()
+
+        reset()
     }
 
     fun pause() {
         player?.pause()
+    }
+
+    private fun reset(){
+        player?.reset()
+        if (resId != 0) {
+            createFromRes(resId)
+        }
+
+        if(fileName != ""){
+            createFromAsset(fileName)
+        }
     }
 }
