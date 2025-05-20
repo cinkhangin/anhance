@@ -62,8 +62,8 @@ val Long.timeLeft get() = if (this < millisOfNow) 0L else this - millisOfNow
 val Long.isTimeLeft get() = this.timeLeft > 0
 val Long.timeGap get() = millisOfNow - this
 
-fun Long.formatWith(pattern: String): String {
-    return SimpleDateFormat(pattern, Locale.getDefault()).format(this)
+fun Long.formatWith(pattern: String, locale: Locale = Locale.getDefault()): String {
+    return SimpleDateFormat(pattern, locale).format(this)
 }
 
 //format examples : 16m, 1h, 52s
@@ -126,15 +126,16 @@ fun Long.formatDuration(): String {
         "${this.leftSecond}s",
     )
 
-    val output = loopForString(units){
+    val output = loopForString(units) {
         val empty = it.startsWith("0")
-        if(empty) "" else " $it"
+        if (empty) "" else " $it"
     }
     return trim(output)
 }
 
 val clockKey get() = AnClock.createKey
-object AnClock{
+
+object AnClock {
     val createKey get() = millisOfNow.formatWith(AnPattern.DATE_KEY)
 }
 

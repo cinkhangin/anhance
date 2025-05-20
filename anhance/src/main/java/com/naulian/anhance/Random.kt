@@ -4,23 +4,21 @@ package com.naulian.anhance
 
 import kotlin.random.Random
 
-val Int.random get() = AnRandom.generateInt(0, this)
-val Long.random get() = AnRandom.generateLong(0, this)
+val Int.random get() = AndroidRandom.generateInt(0, this)
+val Long.random get() = AndroidRandom.generateLong(0, this)
 
-fun randomOf(from: Int = 0, until: Int) = AnRandom.generateInt(from, until)
-fun randomOf(from: Long = 0L, until: Long) = AnRandom.generateLong(from, until)
-fun randomFloat() = AnRandom.generateFloat()
+fun randomOf(from: Int = 0, until: Int) = AndroidRandom.generateInt(from, until)
+fun randomOf(from: Long = 0L, until: Long) = AndroidRandom.generateLong(from, until)
+fun randomFloat() = AndroidRandom.generateFloat()
 
-val uniqueSeed get() = AnRandom.generator()
+val uniqueSeed get() = AndroidRandom.generator()
 
-object AnRandom {
+object AndroidRandom {
     val generator get() = generator()
 
     fun generateFloat() = generator.nextFloat()
-
     fun generateInt(from: Int, until: Int) = generator.nextInt(from, until)
     fun generateLong(from: Long, until: Long) = generator.nextLong(from, until)
-
 
     //private methods==================
     fun generator(): Random {

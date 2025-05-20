@@ -13,11 +13,6 @@ fun ifEmpty(string: String, action: () -> Unit) {
     if (string.isEmpty()) action()
 }
 
-//return the opposite value of a boolean
-fun not(bool: Boolean): Boolean {
-    return bool.not()
-}
-
 inline fun <T> apply(data: T, block: T.() -> Unit) {
     data.apply { block(this) }
 }
