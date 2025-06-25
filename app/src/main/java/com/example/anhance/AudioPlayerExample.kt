@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.naulian.anhance.AudioPlayer
+import java.io.File
 
 @Composable
 fun AudioPlayerExample() {
@@ -21,7 +22,10 @@ fun AudioPlayerExample() {
     val keyPlayStop = "play_stop"
 
     LaunchedEffect(Unit) {
-        AudioPlayer.load(context, R.raw.be_the_change, keyPlayPause)
+        /* AudioPlayer.load(context, R.raw.be_the_change, keyPlayPause)
+         AudioPlayer.load(context, R.raw.be_the_change, keyPlayStop)*/
+        val url = "https://storage.googleapis.com/pyaw-english.appspot.com/audios/quote_w06i01.mp3"
+        AudioPlayer.load(context, file = File(context.cacheDir, "audio.mp3"), keyPlayPause)
         AudioPlayer.load(context, R.raw.be_the_change, keyPlayStop)
     }
 

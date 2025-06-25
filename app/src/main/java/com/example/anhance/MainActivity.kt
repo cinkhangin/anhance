@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.naulian.anhance.SpeechListener
 import com.naulian.anhance.initializeReader
+import java.io.File
+import java.io.FileOutputStream
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -23,10 +25,20 @@ class MainActivity : ComponentActivity() {
 
         SpeechListener.initialize(this)
 
+        val cacheFile = File(cacheDir, "audio.mp3")
+
+        if (!cacheFile.exists()) {
+            assets.open("audio.mp3").use { inputStream ->
+                FileOutputStream(cacheFile).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+        }
+
         setContent {
             MaterialTheme {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    SpeechToTextExample()
+                    AudioPlayerExample()
                 }
             }
         }

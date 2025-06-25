@@ -4,6 +4,8 @@ package com.naulian.anhance
 
 import android.content.Context
 import android.media.MediaPlayer
+import androidx.core.net.toUri
+import java.io.File
 
 fun Context.playAudio(resId: Int) = AudioPlayer.play(this, resId)
 fun Context.playAudio(fileName: String) = AudioPlayer.play(this, fileName)
@@ -22,7 +24,22 @@ object AudioPlayer {
         }
     }
 
+    fun load(context: Context, file: File, key: String = DEFAULT_PLAYER) {
+        AnMediaPlayer(context).apply {
+            createFromFile(file)
+            keyMap[key] = this
+        }
+    }
+
     fun load(context: Context, fileName: String, key: String = DEFAULT_PLAYER) {
+        if(fileName.startsWith("https")){
+            AnMediaPlayer(context).apply {
+                createFromUrl(url)
+                keyMap[key] = this
+            }
+            return
+        }
+
         AnMediaPlayer(context).apply {
             createFromAsset(fileName)
             keyMap[key] = this
@@ -74,6 +91,12 @@ object AudioPlayer {
 private class AnMediaPlayer(val context: Context) {
     private var player: MediaPlayer? = null
 
+    var url = ""
+        private set
+
+    var file: File? = null
+        private set
+
     var resId = 0
         private set
 
@@ -84,6 +107,16 @@ private class AnMediaPlayer(val context: Context) {
         resId = res
         player?.release()
         return MediaPlayer.create(context, res).also { player = it }
+    }
+
+    fun createFromUrl(url: String): MediaPlayer {
+        this.url = url
+        player?.release()
+        return MediaPlayer().apply {
+            setDataSource(url)
+            prepareAsync()
+            player = this
+        }
     }
 
     fun setOnCompletionListener(action: () -> Unit) {
@@ -99,6 +132,14 @@ private class AnMediaPlayer(val context: Context) {
             it.prepare()
             player = it
         }
+    }
+
+    fun createFromFile(file: File): MediaPlayer {
+        this.file = file
+        return MediaPlayer.create(
+            context,
+            file.toUri()
+        ).also { player = it }
     }
 
     fun play() {
@@ -119,13 +160,13 @@ private class AnMediaPlayer(val context: Context) {
         player?.pause()
     }
 
-    private fun reset(){
+    private fun reset() {
         player?.reset()
         if (resId != 0) {
             createFromRes(resId)
         }
 
-        if(fileName != ""){
+        if (fileName != "") {
             createFromAsset(fileName)
         }
     }
