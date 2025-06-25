@@ -1,9 +1,10 @@
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("com.vanniktech.maven.publish")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.vanniktech.maven)
 }
 
 android {
@@ -29,9 +30,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
+
     buildFeatures {
         viewBinding = true
     }
@@ -55,7 +59,7 @@ mavenPublishing {
     coordinates(
         groupId = "com.naulian",
         artifactId = "anhance",
-        version = "2025.06.00"
+        version = "2025.06.01"
     )
     //./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 
