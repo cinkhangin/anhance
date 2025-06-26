@@ -2,12 +2,13 @@
 
 package com.naulian.anhance
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 //Constants
 const val YEAR: Long = 31_536_000_000L //365 days
@@ -47,15 +48,19 @@ val Long.toYearString get() = if (this == 0L) "" else "${this}y"
 val Int.to0String get() = if (this < 10) "0$this" else "$this"
 val Long.to0String get() = if (this < 10) "0$this" else "$this"
 
+@OptIn(ExperimentalTime::class)
 private val systemClock get() = Clock.System
+@OptIn(ExperimentalTime::class)
 private val now get() = systemClock.now()
 private val timeZone get() = TimeZone.currentSystemDefault()
+@OptIn(ExperimentalTime::class)
 private val localDate = systemClock.todayIn(timeZone)
+@OptIn(ExperimentalTime::class)
 private val localDateTime = now.toLocalDateTime(timeZone)
 
 val millisOfNow get() = System.currentTimeMillis()
-val intOfDay get() = localDate.dayOfMonth
-val intOfMonth get() = localDate.monthNumber
+val intOfDay get() = localDate.day
+val intOfMonth get() = localDate.month
 val intOfYear get() = localDate.year
 
 val Long.timeLeft get() = if (this < millisOfNow) 0L else this - millisOfNow
