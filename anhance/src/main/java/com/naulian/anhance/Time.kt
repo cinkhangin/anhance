@@ -133,10 +133,4 @@ fun Long.formatDuration(): String {
     return trim(output)
 }
 
-val clockKey get() = AnClock.createKey
-
-object AnClock {
-    val createKey get() = millisOfNow.formatWith(AnPattern.DATE_KEY)
-}
-
 

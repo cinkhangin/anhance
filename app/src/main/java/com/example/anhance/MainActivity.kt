@@ -23,8 +23,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         initializeReader(this)
 
-        SpeechListener.initialize(this)
-
         val cacheFile = File(cacheDir, "audio.mp3")
 
         if (!cacheFile.exists()) {
@@ -38,7 +36,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    AudioPlayerExample()
+                    //AudioPlayerExample()
+                    SpeechToTextExample()
                 }
             }
         }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
@@ -42,32 +43,35 @@ fun SpeechToTextExample() {
         hasPermission = isGranted
     }
 
+    var text by remember { mutableStateOf("") }
+
     LaunchedEffect(hasPermission) {
         if (!hasPermission) {
             permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
-        }
-    }
-
-    var text by remember { mutableStateOf("") }
-
-    Text(text = text)
-    Spacer(modifier = Modifier.height(16.dp))
-    Button(
-        onClick = {
-            SpeechListener.listen(context = context) { state ->
-                text = when (state) {
-                    SpeechToTextResult.Begin -> "Listening"
-                    SpeechToTextResult.End -> "Closed"
-                    is SpeechToTextResult.Error -> state.message
-                    SpeechToTextResult.Failure -> "Failure"
-                    is SpeechToTextResult.Partial -> state.text
-                    SpeechToTextResult.Ready -> "Ready"
-                    is SpeechToTextResult.Result -> state.text
+        }else{
+            SpeechListener.observe(context = context) { state ->
+                when (state) {
+                    is SpeechToTextResult.Error -> text = state.message
+                    is SpeechToTextResult.Partial -> text =state.text
+                    SpeechToTextResult.Ready -> text = "Listening"
+                    is SpeechToTextResult.Result -> text = state.text
+                    else -> {}
                 }
             }
         }
-    ) {
-        Text(text = "Listen")
+    }
+
+
+    Column {
+        Text(text = text)
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = {
+               SpeechListener.startListening(context, 3)
+            }
+        ) {
+            Text(text = "Listen")
+        }
     }
 }
 
