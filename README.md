@@ -118,7 +118,7 @@ val b = "abc".toSafeInt() //0
 
 add a dependency 
 
-![Maven Central Version](https://img.shields.io/maven-central/v/com.naulian/anhance?versionPrefix=2025.1.0&style=for-the-badge&label=Maven)
+![Maven Central Version](https://img.shields.io/maven-central/v/com.naulian/anhance?versionPrefix=2025.06.02&style=for-the-badge&label=Maven)
 ```kotlin
 dependencies {
     implementation("com.naulian:anhance:latest_version")
