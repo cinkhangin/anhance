@@ -1,4 +1,4 @@
-package com.example.anhance
+package com.anhance.example
 
 import org.junit.Test
 

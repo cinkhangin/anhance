@@ -15,5 +15,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Anhance"
-include(":app")
+include(":example")
 include(":anhance")

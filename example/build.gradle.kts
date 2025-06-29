@@ -6,14 +6,15 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+val packageName = "com.anhance.example"
 android {
-    compileSdk = 35
-    namespace = "com.example.anhance"
+    compileSdk = 36
+    namespace = packageName
 
     defaultConfig {
-        applicationId = "com.example.anhance"
+        applicationId = packageName
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

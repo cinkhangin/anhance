@@ -1,4 +1,4 @@
-package com.example.anhance
+package com.anhance.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,15 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.naulian.anhance.SpeechListener
 import com.naulian.anhance.initializeReader
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 
 class MainActivity : ComponentActivity() {

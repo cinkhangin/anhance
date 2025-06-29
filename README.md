@@ -1,4 +1,4 @@
-![Maven Central Version](https://img.shields.io/maven-central/v/com.naulian/anhance?versionPrefix=2025.1.0&style=for-the-badge&label=Maven)
+![Maven Central Version](https://img.shields.io/maven-central/v/com.naulian/anhance?versionPrefix=2026.06.02&style=for-the-badge&label=Maven)
 
 
 # anhance 
@@ -15,29 +15,31 @@ Remember, never let anyone tell you that you are ugly. Enjoy coding! :D
 
 ## Features
 
-### AnEar
-AnEar is a speech recognizer extension
+### SpeechListener
+SpeechListener is a speech recognizer extension
 ```kotlin
-AnEar.listen(context){ state , text ->
-    when(state){
-        READY -> showToast("Ready")
-        BEGIN, VOLUME, PARTIAL -> Unit
-        RESULT -> showToast(text)
-        ERROR -> showToast("error")
-        END -> Unit
+SpeechListener.observe(context = context) { state ->
+    when (state) {
+        is SpeechToTextResult.Error -> text = state.message
+        is SpeechToTextResult.Partial -> text =state.text
+        SpeechToTextResult.Ready -> text = "Listening"
+        is SpeechToTextResult.Result -> text = state.text
+        else -> {}
     }
 }
+SpeechListener.startListening(context)
+SpeechListener.stopListening()
 ```
 
-### AnReader
-AnReader is a text-to-speech extension
+### TextReader
+TextReader is a text-to-speech extension
 ```kotlin
 //onCreate (Application)
-AnReader.initialize(this)
+TextReader.initialize(this)
 initializeReader(this)
 
 //Read text
-AnReader.read("hello"){ //on error 
+TextReader.read("hello"){ //on error 
 }
 readText("hello"){ //on error 
 }

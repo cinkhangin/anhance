@@ -1,4 +1,4 @@
-package com.example.anhance
+package com.anhance.example
 
 import android.Manifest
 import android.content.pm.PackageManager
