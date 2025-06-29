@@ -1,4 +1,4 @@
-![Maven Central Version](https://img.shields.io/maven-central/v/com.naulian/anhance?versionPrefix=2026.06.02&style=for-the-badge&label=Maven)
+![Maven Central Version](https://img.shields.io/maven-central/v/com.naulian/anhance?versionPrefix=2025.06.02&style=for-the-badge&label=Maven)
 
 
 # anhance 
