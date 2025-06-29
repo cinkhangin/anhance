@@ -58,7 +58,7 @@ mavenPublishing {
     coordinates(
         groupId = "com.naulian",
         artifactId = "anhance",
-        version = "2025.06.01"
+        version = "2025.06.02"
     )
     //./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 

@@ -67,7 +67,7 @@ fun SpeechToTextExample() {
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-               SpeechListener.startListening(context, 3)
+               SpeechListener.startListening(context)
             }
         ) {
             Text(text = "Listen")

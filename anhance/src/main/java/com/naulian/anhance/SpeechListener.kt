@@ -28,18 +28,18 @@ object SpeechListener {
 
     private val initialized get() = ::speechRecognizer.isInitialized
 
-    fun observe(context: Context, wordCount: Int = 1, action: (SpeechToTextResult) -> Unit) {
+    fun observe(context: Context, action: (SpeechToTextResult) -> Unit) {
         val isAvailable = SpeechRecognizer.isRecognitionAvailable(context)
         if (isAvailable) {
             Log.i(TAG, "initialize: SpeechRecognizer is available")
-            setup(context, wordCount, action)
+            setup(context, action)
             return
         }
 
         Log.e(TAG, "initialize: SpeechRecognizer is not available")
     }
 
-    private fun setup(context: Context, wordCount : Int = 1, action: (SpeechToTextResult) -> Unit) {
+    private fun setup(context: Context, action: (SpeechToTextResult) -> Unit) {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
         val recognitionListener = object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) {
@@ -93,7 +93,7 @@ object SpeechListener {
         speechRecognizer.setRecognitionListener(recognitionListener)
     }
 
-    fun startListening(context : Context, wordCount: Int = 1) {
+    fun startListening(context : Context) {
         if (listening) {
            stopListening()
         }
@@ -103,7 +103,6 @@ object SpeechListener {
             putExtra(RI.EXTRA_LANGUAGE, "en-US")
             putExtra(RI.EXTRA_CALLING_PACKAGE, context.packageName)
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, wordCount)
         }
 
         speechRecognizer.startListening(speechIntent)
