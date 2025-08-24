@@ -3,6 +3,7 @@
 package com.naulian.anhance
 
 import android.graphics.Color
+import android.util.Log
 
 
 fun ifNotEmpty(string: String, action: (String) -> Unit) {
@@ -39,14 +40,14 @@ inline fun <T> forEach(list: Iterable<T>, action: (T) -> Unit) {
 
 fun String.toColorInt(): Int {
     if (!startsWith("#")) {
-        logError("toColorInt", "Error : '$this' is not a hex string")
+        Log.e("toColorInt", "Error : '$this' is not a hex string")
         return Color.WHITE
     }
 
     return when (length) {
         4, 7, 9 -> Color.parseColor(this)
         else -> {
-            logError("toColorInt", "Error : '$this' is not a hex string")
+            Log.e("toColorInt", "Error : '$this' is not a hex string")
             Color.WHITE
         }
     }

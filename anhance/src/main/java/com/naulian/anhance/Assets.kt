@@ -8,9 +8,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
+
 fun Context.readStringAsset(filename: String): String {
     return try {
-         assets.open(filename)
+        assets.open(filename)
             .bufferedReader()
             .use { it.readText() }
     } catch (e: IOException) {
@@ -19,16 +20,22 @@ fun Context.readStringAsset(filename: String): String {
     }
 }
 
-fun Context.readStringAsset(filename: String, action: (Result<String>) -> Unit) {
+fun Context.readStringAsset(filename: String, result: (Result<String>) -> Unit) {
     try {
         val string = assets.open(filename)
             .bufferedReader()
             .use { it.readText() }
-        action(Result.success(string))
+        result(Result.success(string))
     } catch (ioException: IOException) {
         ioException.printStackTrace()
-        action(Result.failure(ioException))
+        result(Result.failure(ioException))
     }
+}
+
+fun readStringAsset(context: Context, filename: String) = runCatching {
+    context.assets.open(filename)
+        .bufferedReader()
+        .use { it.readText() }
 }
 
 fun Context.readAsset(filename: String): AssetFileDescriptor? {
@@ -48,7 +55,7 @@ fun Context.readAssetFd(filename: String, action: (Result<AssetFileDescriptor>) 
     }
 }
 
-fun Context.assetFilePath(assetName: String): String? {
+fun Context.assetFilePath(assetName: String): String {
     val file = File(filesDir, assetName)
     return try {
         assets.open(assetName).use { ins ->
@@ -63,7 +70,7 @@ fun Context.assetFilePath(assetName: String): String? {
             return file.absolutePath
         }
     } catch (e: IOException) {
-        logError("AnAsset","cannot process file path for $assetName")
-        null
+        e.printStackTrace()
+        ""
     }
 }

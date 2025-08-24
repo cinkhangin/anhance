@@ -29,14 +29,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
 
     buildFeatures {
         viewBinding = true
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
@@ -44,10 +45,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
-    //datetime
-    implementation(libs.kotlinx.datetime)
+    //implementation(libs.material)
 }
 
 mavenPublishing {
@@ -58,7 +56,7 @@ mavenPublishing {
     coordinates(
         groupId = "com.naulian",
         artifactId = "anhance",
-        version = "2025.07.00"
+        version = "2025.08.00"
     )
     //./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 

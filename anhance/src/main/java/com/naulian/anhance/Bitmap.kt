@@ -44,7 +44,6 @@ private fun Bitmap.saveQ(context: Context) {
         } catch (e: Exception) {
             context.showToast("Image Not Not  Saved: ${e.message}")
             e.printStackTrace()
-            logError("AnBitmap saveQ",e.message)
         }
     }
 }
@@ -70,6 +69,5 @@ private fun Bitmap.save(context: Context) {
     } catch (e: Exception) {
         context.showToast("Image Not Not  Saved: ${e.message}")
         e.printStackTrace()
-        logError("AnBitmap save",e.message)
     }
 }
