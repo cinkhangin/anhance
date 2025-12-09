@@ -29,10 +29,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 kotlin {
@@ -56,7 +52,7 @@ mavenPublishing {
     coordinates(
         groupId = "com.naulian",
         artifactId = "anhance",
-        version = "2025.08.00"
+        version = "2025.12.00"
     )
     //./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 
