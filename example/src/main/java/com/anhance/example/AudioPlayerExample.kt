@@ -11,7 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.naulian.anhance.AudioPlayer
+import com.ckgin.anhance.AudioPlayer
 import java.io.File
 
 @Composable

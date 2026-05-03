@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.naulian.anhance.initializeReader
+import com.ckgin.anhance.initializeReader
 import java.io.File
 import java.io.FileOutputStream
 

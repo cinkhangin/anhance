@@ -1,14 +1,11 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.vanniktech.maven)
 }
 
 android {
-    compileSdk = 36
-    namespace = "com.naulian.anhance"
+    compileSdk = 37
+    namespace = "com.ckgin.anhance"
 
     defaultConfig {
         minSdk = 26
@@ -31,17 +28,10 @@ android {
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-    }
-}
-
 dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    //implementation(libs.material)
 }
 
 mavenPublishing {
@@ -50,9 +40,9 @@ mavenPublishing {
     signAllPublications()
 
     coordinates(
-        groupId = "com.naulian",
+        groupId = "com.ckgin",
         artifactId = "anhance",
-        version = "2025.12.00"
+        version = "2026.05.00"
     )
     //./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 
@@ -70,10 +60,10 @@ mavenPublishing {
         }
         developers {
             developer {
-                id.set("naulian")
-                name.set("Naulian")
+                id.set("ckgin")
+                name.set("Cin Khan Gin")
                 url.set("https://github.com/cinkhangin/")
-                email.set("hello@naulian.com")
+                email.set("cinkhangin@gmail.com")
             }
         }
         scm {

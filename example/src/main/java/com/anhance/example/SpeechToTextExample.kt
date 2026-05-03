@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.naulian.anhance.SpeechListener
-import com.naulian.anhance.SpeechToTextResult
+import com.ckgin.anhance.SpeechListener
+import com.ckgin.anhance.SpeechToTextResult
 
 @Composable
 fun SpeechToTextExample() {
