@@ -29,7 +29,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 }
@@ -42,7 +41,7 @@ mavenPublishing {
     coordinates(
         groupId = "com.ckgin",
         artifactId = "anhance",
-        version = "2026.05.00"
+        version = "2026.09.00"
     )
     //./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 
