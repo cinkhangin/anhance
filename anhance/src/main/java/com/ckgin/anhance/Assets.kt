@@ -9,27 +9,19 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 
-fun Context.readStringAsset(filename: String): String {
-    return try {
+fun Context.readStringAsset(filename: String): String = runCatching {
+    assets.open(filename).bufferedReader().use { it.readText() }
+}.fold(onSuccess = { it }, onFailure = { "" })
+
+
+fun Context.readStringAsset(
+    filename: String, result: (Result<String>) -> Unit
+) {
+    runCatching {
         assets.open(filename)
             .bufferedReader()
             .use { it.readText() }
-    } catch (e: IOException) {
-        e.printStackTrace()
-        ""
-    }
-}
-
-fun Context.readStringAsset(filename: String, result: (Result<String>) -> Unit) {
-    try {
-        val string = assets.open(filename)
-            .bufferedReader()
-            .use { it.readText() }
-        result(Result.success(string))
-    } catch (ioException: IOException) {
-        ioException.printStackTrace()
-        result(Result.failure(ioException))
-    }
+    }.let(result)
 }
 
 fun readStringAsset(context: Context, filename: String) = runCatching {
