@@ -10,13 +10,6 @@ import android.net.NetworkCapabilities
 private const val CLIPBOARD = Context.CLIPBOARD_SERVICE
 private const val CONNECTIVITY = Context.CONNECTIVITY_SERVICE
 
-private const val NETWORK_CELLULAR = NetworkCapabilities.TRANSPORT_CELLULAR
-private const val NETWORK_WIFI = NetworkCapabilities.TRANSPORT_WIFI
-private const val NETWORK_ETHERNET = NetworkCapabilities.TRANSPORT_WIFI
-private val NetworkCapabilities.hasCellular get() = hasTransport(NETWORK_CELLULAR)
-private val NetworkCapabilities.hasEthernet get() = hasTransport(NETWORK_ETHERNET)
-private val NetworkCapabilities.hasWifi get() = hasTransport(NETWORK_WIFI)
-
 private fun Context.getService(service: String) =
     this.getSystemService(service)
 
@@ -35,7 +28,8 @@ val Context.networkCapabilities
 val Context.isInternetAvailable
     get() : Boolean {
         val availability = networkCapabilities?.let {
-            it.hasWifi || it.hasCellular || it.hasEthernet
+            it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                it.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
         }
         return availability ?: false
     }

@@ -6,67 +6,54 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.core.net.toUri
 import java.io.File
+import java.io.IOException
 
 fun Context.playAudio(resId: Int) = AudioPlayer.play(this, resId)
 fun Context.playAudio(fileName: String) = AudioPlayer.play(this, fileName)
 
 object AudioPlayer {
     private val keyMap = hashMapOf<String, AnMediaPlayer>()
-
     private const val DEFAULT_PLAYER = "default_player"
 
-    private val defaultPlayer get() = keyMap[DEFAULT_PLAYER]
-
     fun load(context: Context, resId: Int, key: String = DEFAULT_PLAYER) {
-        AnMediaPlayer(context).apply {
-            createFromRes(resId)
-            keyMap[key] = this
-        }
+        replace(key, AnMediaPlayer(context.applicationContext).apply { createFromRes(resId) })
     }
 
     fun load(context: Context, file: File, key: String = DEFAULT_PLAYER) {
-        AnMediaPlayer(context).apply {
-            createFromFile(file)
-            keyMap[key] = this
-        }
+        replace(key, AnMediaPlayer(context.applicationContext).apply { createFromFile(file) })
     }
 
     fun load(context: Context, fileName: String, key: String = DEFAULT_PLAYER) {
-        if(fileName.startsWith("https")){
-            AnMediaPlayer(context).apply {
-                createFromUrl(url)
-                keyMap[key] = this
+        val player = AnMediaPlayer(context.applicationContext).apply {
+            if (fileName.startsWith("https://", ignoreCase = true) ||
+                fileName.startsWith("http://", ignoreCase = true)
+            ) {
+                createFromUrl(fileName)
+            } else {
+                createFromAsset(fileName)
             }
-            return
         }
+        replace(key, player)
+    }
 
-        AnMediaPlayer(context).apply {
-            createFromAsset(fileName)
-            keyMap[key] = this
-        }
+    private fun replace(key: String, player: AnMediaPlayer) {
+        keyMap.put(key, player)?.release()
     }
 
     fun play(context: Context, resId: Int, onComplete: () -> Unit = {}) {
-        if (resId == defaultPlayer?.resId) {
-            stop()
-        }
-
-        load(context = context, resId = resId)
+        load(context, resId)
         play(onComplete = onComplete)
     }
 
     fun play(context: Context, fileName: String, onComplete: () -> Unit = {}) {
-        if (fileName == defaultPlayer?.fileName) {
-            stop()
-        }
-        load(context = context, fileName = fileName)
+        load(context, fileName)
         play(onComplete = onComplete)
     }
 
     fun play(key: String = DEFAULT_PLAYER, onComplete: () -> Unit = {}) {
-        keyMap[key]?.let { player ->
-            player.play()
-            player.setOnCompletionListener(onComplete)
+        keyMap[key]?.apply {
+            setOnCompletionListener(onComplete)
+            play()
         }
     }
 
@@ -75,47 +62,77 @@ object AudioPlayer {
     }
 
     fun remove(key: String = DEFAULT_PLAYER) {
-        keyMap.remove(key)
+        keyMap.remove(key)?.release()
     }
 
     fun pause(key: String = DEFAULT_PLAYER) {
         keyMap[key]?.pause()
     }
 
-    //clear all player
     fun clear() {
+        keyMap.values.forEach { it.release() }
         keyMap.clear()
     }
 }
 
-private class AnMediaPlayer(val context: Context) {
+private class AnMediaPlayer(private val context: Context) {
     private var player: MediaPlayer? = null
+    private var prepared = false
+    private var playWhenPrepared = false
 
-    var url = ""
-        private set
-
-    var file: File? = null
-        private set
-
-    var resId = 0
-        private set
-
-    var fileName = ""
-        private set
-
-    fun createFromRes(res: Int): MediaPlayer {
-        resId = res
-        player?.release()
-        return MediaPlayer.create(context, res).also { player = it }
+    fun createFromRes(resId: Int) {
+        player = MediaPlayer.create(context, resId) ?: throw IOException("Cannot open audio resource")
+        prepared = true
+        listenForErrors()
     }
 
-    fun createFromUrl(url: String): MediaPlayer {
-        this.url = url
-        player?.release()
-        return MediaPlayer().apply {
-            setDataSource(url)
-            prepareAsync()
-            player = this
+    fun createFromFile(file: File) {
+        player = MediaPlayer.create(context, file.toUri()) ?: throw IOException("Cannot open audio file")
+        prepared = true
+        listenForErrors()
+    }
+
+    fun createFromUrl(url: String) {
+        create { media ->
+            media.setOnPreparedListener {
+                prepared = true
+                if (playWhenPrepared) {
+                    playWhenPrepared = false
+                    it.start()
+                }
+            }
+            media.setDataSource(url)
+            media.prepareAsync()
+        }
+    }
+
+    fun createFromAsset(fileName: String) {
+        create { media ->
+            context.assets.openFd(fileName).use { asset ->
+                media.setDataSource(asset.fileDescriptor, asset.startOffset, asset.length)
+            }
+            media.prepare()
+            prepared = true
+        }
+    }
+
+    private fun create(setup: (MediaPlayer) -> Unit) {
+        val media = MediaPlayer()
+        player = media
+        listenForErrors()
+        try {
+            setup(media)
+        } catch (exception: Exception) {
+            release()
+            throw exception
+        }
+    }
+
+    private fun listenForErrors() {
+        player?.setOnErrorListener { _, _, _ ->
+            prepared = false
+            playWhenPrepared = false
+            false
         }
     }
 
@@ -123,51 +140,34 @@ private class AnMediaPlayer(val context: Context) {
         player?.setOnCompletionListener { action() }
     }
 
-    fun createFromAsset(fileName: String): MediaPlayer {
-        this.fileName = fileName
-        return MediaPlayer().also {
-            val file = context.assets.openFd(fileName)
-            it.setDataSource(file.fileDescriptor, file.startOffset, file.length)
-            file.close()
-            it.prepare()
-            player = it
-        }
-    }
-
-    fun createFromFile(file: File): MediaPlayer {
-        this.file = file
-        return MediaPlayer.create(
-            context,
-            file.toUri()
-        ).also { player = it }
-    }
-
     fun play() {
-        if (player?.isPlaying == true) {
-            player?.stop()
+        val media = player ?: return
+        if (!prepared) {
+            playWhenPrepared = true
+            return
         }
-
-        player?.start()
+        if (media.isPlaying) media.seekTo(0)
+        media.start()
     }
 
     fun stop() {
-        player?.stop()
-
-        reset()
+        playWhenPrepared = false
+        if (!prepared) return
+        player?.let {
+            if (it.isPlaying) it.pause()
+            it.seekTo(0)
+        }
     }
 
     fun pause() {
-        player?.pause()
+        playWhenPrepared = false
+        if (prepared && player?.isPlaying == true) player?.pause()
     }
 
-    private fun reset() {
-        player?.reset()
-        if (resId != 0) {
-            createFromRes(resId)
-        }
-
-        if (fileName != "") {
-            createFromAsset(fileName)
-        }
+    fun release() {
+        playWhenPrepared = false
+        prepared = false
+        player?.release()
+        player = null
     }
 }

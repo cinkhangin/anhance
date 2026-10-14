@@ -11,7 +11,7 @@ import java.io.FileNotFoundException
 fun readImage(path: String, fileName: String): Bitmap? {
     return try {
         val file = File(path, fileName)
-        BitmapFactory.decodeStream(FileInputStream(file))
+        FileInputStream(file).use { BitmapFactory.decodeStream(it) }
     } catch (e: FileNotFoundException) {
         e.printStackTrace()
         null

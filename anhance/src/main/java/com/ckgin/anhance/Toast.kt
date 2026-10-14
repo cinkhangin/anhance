@@ -7,7 +7,7 @@ import android.widget.Toast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlin.time.Duration.Companion.milliseconds
 
 fun showTextToast(context: Context, message: String?) {
     Toast.makeText(context, "$message", Toast.LENGTH_SHORT).show()
@@ -40,11 +40,22 @@ object FlowToast {
 
     private val _message = MutableStateFlow(ToastMessage.Empty)
     val message = _message.asStateFlow()
+    private val lock = Any()
+    private var generation = 0L
 
     suspend fun show(text: String, duration: Long = LENGTH_SHORT, isError: Boolean = false) {
-        _message.update { ToastMessage(text = text, isError = isError) }
-        delay(duration)
-        _message.update { ToastMessage.Empty }
+        val token = synchronized(lock) {
+            generation++
+            _message.value = ToastMessage(text = text, isError = isError)
+            generation
+        }
+        try {
+            delay(duration.milliseconds)
+        } finally {
+            synchronized(lock) {
+                if (generation == token) _message.value = ToastMessage.Empty
+            }
+        }
     }
 
     suspend fun showErr(text: String, duration: Long = LENGTH_SHORT) {

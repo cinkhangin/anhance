@@ -15,6 +15,8 @@ Remember, never let anyone tell you that you are ugly. Enjoy coding! :D
 
 ## Features
 
+For regression coverage, validation commands, and upgrade behavior changes, see [TESTING.md](TESTING.md).
+
 ### SpeechListener
 SpeechListener is a speech recognizer extension
 ```kotlin

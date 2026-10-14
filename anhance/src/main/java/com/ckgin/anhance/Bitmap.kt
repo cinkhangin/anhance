@@ -10,64 +10,59 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import java.io.File
-import java.io.FileOutputStream
+import java.io.IOException
 
 fun Bitmap.saveAsJpeg(context: Context) {
-    val android10 = Build.VERSION_CODES.Q
-    if (Build.VERSION.SDK_INT < android10) save(context)
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) save(context)
     else saveQ(context)
 }
 
 @RequiresApi(Build.VERSION_CODES.Q)
 private fun Bitmap.saveQ(context: Context) {
     val resolver = context.contentResolver
-    val filename = "image_$millisOfNow.jpeg"
-
-    ContentValues().apply {
-        val directory = Environment.DIRECTORY_PICTURES
-        val contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        val pathName = "$directory/images"
-        put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-        put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-        put(MediaStore.MediaColumns.RELATIVE_PATH, pathName)
-        val imageUri = resolver.insert(contentUri, this)
-
-        try {
-            imageUri?.let {
-                 resolver.openOutputStream(it)?.apply {
-                     compress(Bitmap.CompressFormat.JPEG, 100, this)
-                     flush()
-                     close()
-                     context.showToast("Image Saved")
-                 }
-            }
-        } catch (e: Exception) {
-            context.showToast("Image Not Not  Saved: ${e.message}")
-            e.printStackTrace()
+    var imageUri: android.net.Uri? = null
+    try {
+        val values = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "image_$millisOfNow.jpeg")
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/images")
+            put(MediaStore.MediaColumns.IS_PENDING, 1)
         }
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            ?: throw IOException("Cannot create image")
+        imageUri = uri
+        val stream = resolver.openOutputStream(uri) ?: throw IOException("Cannot open image output stream")
+        stream.use {
+            if (!compress(Bitmap.CompressFormat.JPEG, 100, it)) throw IOException("Cannot compress image")
+        }
+        val published = ContentValues().apply { put(MediaStore.MediaColumns.IS_PENDING, 0) }
+        if (resolver.update(uri, published, null, null) <= 0) throw IOException("Cannot publish image")
+        context.showToast("Image Saved")
+    } catch (exception: Exception) {
+        imageUri?.let { uri ->
+            try {
+                resolver.delete(uri, null, null)
+            } catch (cleanup: Exception) {
+                exception.addSuppressed(cleanup)
+            }
+        }
+        context.showToast("Image Not Saved: ${exception.message}")
     }
 }
 
 private fun Bitmap.save(context: Context) {
-    val root = Environment.getExternalStorageDirectory().toString()
-    val fileDir = File("$root/images")
-
-    if (!fileDir.exists()) {
-        fileDir.mkdirs()
-    }
-
-    val filename = "image_$millisOfNow.jpeg"
-    val file = File(fileDir, filename)
-    if (file.exists()) file.delete()
-
+    var savedFile: File? = null
     try {
-        val os = FileOutputStream(file)
-        compress(Bitmap.CompressFormat.JPEG, 100, os)
-        os.flush()
-        os.close()
+        val directory = File(Environment.getExternalStorageDirectory(), "images")
+        if (!directory.isDirectory && !directory.mkdirs()) throw IOException("Cannot create image directory")
+        val file = File.createTempFile("image_", ".jpeg", directory)
+        savedFile = file
+        file.outputStream().use {
+            if (!compress(Bitmap.CompressFormat.JPEG, 100, it)) throw IOException("Cannot compress image")
+        }
         context.showToast("Image Saved")
-    } catch (e: Exception) {
-        context.showToast("Image Not Not  Saved: ${e.message}")
-        e.printStackTrace()
+    } catch (exception: Exception) {
+        savedFile?.delete()
+        context.showToast("Image Not Saved: ${exception.message}")
     }
 }

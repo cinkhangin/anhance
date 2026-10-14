@@ -24,9 +24,7 @@ object SpeechListener {
     private val TAG = SpeechListener::class.java.simpleName
 
     private var listening = false
-    private lateinit var speechRecognizer: SpeechRecognizer
-
-    private val initialized get() = ::speechRecognizer.isInitialized
+    private var speechRecognizer: SpeechRecognizer? = null
 
     fun observe(context: Context, action: (SpeechToTextResult) -> Unit) {
         val isAvailable = SpeechRecognizer.isRecognitionAvailable(context)
@@ -37,10 +35,13 @@ object SpeechListener {
         }
 
         Log.e(TAG, "initialize: SpeechRecognizer is not available")
+        destroy()
+        action(SpeechToTextResult.Error("SpeechRecognizer is not available"))
     }
 
     private fun setup(context: Context, action: (SpeechToTextResult) -> Unit) {
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
+        destroy()
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context.applicationContext)
         val recognitionListener = object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) {
                 action(SpeechToTextResult.Ready)
@@ -57,15 +58,17 @@ object SpeechListener {
                 val voiceResults = partialResults.getStringArrayList(
                     SpeechRecognizer.RESULTS_RECOGNITION
                 )
-                action(SpeechToTextResult.Partial(voiceResults?.joinToString(" ") ?: ""))
+                action(SpeechToTextResult.Partial(voiceResults?.firstOrNull() ?: ""))
             }
 
             override fun onResults(results: Bundle) {
                 val voiceResults = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                action(SpeechToTextResult.Partial(voiceResults?.joinToString(" ") ?: ""))
+                listening = false
+                action(SpeechToTextResult.Result(voiceResults?.firstOrNull() ?: ""))
             }
 
             override fun onError(error: Int) {
+                listening = false
                 val message = when (error) {
                     SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
                     SpeechRecognizer.ERROR_CLIENT -> "Client side error"
@@ -84,18 +87,18 @@ object SpeechListener {
 
             override fun onEndOfSpeech() {
                 action(SpeechToTextResult.End)
-                stopListening()
             }
 
             override fun onEvent(eventType: Int, params: Bundle?) {}
         }
 
-        speechRecognizer.setRecognitionListener(recognitionListener)
+        speechRecognizer?.setRecognitionListener(recognitionListener)
     }
 
     fun startListening(context : Context) {
+        val recognizer = speechRecognizer ?: return
         if (listening) {
-           stopListening()
+            return
         }
 
         val speechIntent = Intent(RI.ACTION_RECOGNIZE_SPEECH).apply {
@@ -105,7 +108,7 @@ object SpeechListener {
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
         }
 
-        speechRecognizer.startListening(speechIntent)
+        recognizer.startListening(speechIntent)
         listening = true
     }
 
@@ -114,13 +117,13 @@ object SpeechListener {
             return
         }
 
-        speechRecognizer.stopListening()
+        speechRecognizer?.stopListening()
         listening = false
     }
 
     fun destroy() {
         listening = false
-        speechRecognizer.stopListening()
-        speechRecognizer.destroy()
+        speechRecognizer?.destroy()
+        speechRecognizer = null
     }
 }

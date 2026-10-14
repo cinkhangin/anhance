@@ -4,13 +4,11 @@ package com.ckgin.anhance
 
 import java.text.SimpleDateFormat
 import java.util.Locale
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 //Constants
 const val YEAR: Long = 31_536_000_000L //365 days
 const val MONTH: Long = 2_592_000_000L //30 days
-const val WEEK: Long = 604_800_800L //7 days
+const val WEEK: Long = 604_800_000L //7 days
 const val DAY: Long = 86_400_000L //24 hour
 const val HOUR: Long = 3_600_000L //60 minutes
 const val MINUTE: Long = 60_000L //60 seconds
@@ -42,17 +40,12 @@ private val Long.yearOrEmpty get() = if (this > 0) "${this}y" else ""
 val Long.toClockString get() = if (this == 0L) "00" else this.to0String
 val Long.toDayString get() = if (this == 0L) "" else "${this}d "
 val Long.toYearString get() = if (this == 0L) "" else "${this}y"
-val Int.to0String get() = if (this < 10) "0$this" else "$this"
-val Long.to0String get() = if (this < 10) "0$this" else "$this"
-
-@OptIn(ExperimentalTime::class)
-private val systemClock get() = Clock.System
-@OptIn(ExperimentalTime::class)
-private val now get() = systemClock.now()
+val Int.to0String get() = if (this in 0..9) "0$this" else "$this"
+val Long.to0String get() = if (this in 0L..9L) "0$this" else "$this"
 
 val millisOfNow get() = System.currentTimeMillis()
 
-val Long.timeLeft get() = if (this < millisOfNow) 0L else this - millisOfNow
+val Long.timeLeft get() = (this - millisOfNow).coerceAtLeast(0L)
 val Long.isTimeLeft get() = this.timeLeft > 0
 val Long.timeGap get() = millisOfNow - this
 
@@ -64,12 +57,12 @@ fun Long.formatWith(pattern: String, locale: Locale = Locale.getDefault()): Stri
 fun Long.formatAgo(): String {
     val ago = millisOfNow - this
     return when {
-        ago > YEAR -> "${ago / YEAR}y"
-        ago > MONTH -> "${ago / MONTH}mo"
-        ago > DAY -> "${ago / DAY}d"
-        ago > HOUR -> "${ago / HOUR}h"
-        ago > MINUTE -> "${ago / MINUTE}m"
-        ago > SECOND -> "${ago / SECOND}s"
+        ago >= YEAR -> "${ago / YEAR}y"
+        ago >= MONTH -> "${ago / MONTH}mo"
+        ago >= DAY -> "${ago / DAY}d"
+        ago >= HOUR -> "${ago / HOUR}h"
+        ago >= MINUTE -> "${ago / MINUTE}m"
+        ago >= SECOND -> "${ago / SECOND}s"
         else -> "Now"
     }
 }
@@ -92,10 +85,9 @@ fun Long.formatTimer(): String {
     val dayString = this.leftDay.toDayString
     val yearString = this.leftYear.toYearString
 
-    val rawTimeString = "$yearString$dayString$hrString:$minString:$secString"
-
-    return rawTimeString.removePrefix(" 00:")
-        .removePrefix("00:")
+    val prefix = listOf(yearString, dayString.trim()).filter { it.isNotEmpty() }.joinToString(" ")
+    val clock = "$hrString:$minString:$secString"
+    return if (prefix.isEmpty()) clock.removePrefix("00:") else "$prefix $clock"
 }
 
 fun Long.formatClock(): String {
@@ -105,10 +97,9 @@ fun Long.formatClock(): String {
     val dayString = this.leftDay.toDayString
     val yearString = this.leftYear.toYearString
 
-    val timeString = "$yearString $dayString $hrString $minString $secString"
-    val timeArray = timeString.split(" ")
-
-    return "${timeArray[0]}${timeArray[1]}"
+    val prefix = listOf(yearString, dayString.trim()).filter { it.isNotEmpty() }.joinToString(" ")
+    val clock = "$hrString:$minString:$secString"
+    return if (prefix.isEmpty()) clock else "$prefix $clock"
 }
 
 fun Long.formatDuration(): String {

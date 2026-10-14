@@ -5,15 +5,14 @@ package com.ckgin.anhance
 import android.content.ClipData
 import android.content.Context
 import android.os.Build
-import androidx.core.text.isDigitsOnly
 
-fun String.toSafeInt() = if (this.isDigitsOnly()) this.toInt() else 0
+fun String.toSafeInt() = toIntOrNull() ?: 0
 fun trim(string: String) = string.trim()
 fun String.caseContains(string: CharSequence) =
-    contains(string, false)
+    contains(string, ignoreCase = true)
 
 fun String.caseContains(char: Char) =
-    contains(char, false)
+    contains(char, ignoreCase = true)
 
 fun String.copy(context: Context) {
     AnString.copy(context, this)
@@ -24,7 +23,10 @@ fun Context.copyString(string: String) {
 }
 
 fun String.isValidEmail(): Boolean {
-    val emailRegex = "^[A-Za-z0-9+_.-]+@(.+)\$".toRegex()
+    val emailRegex = (
+        "^[A-Za-z0-9+_.-]+@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?" +
+            "(?:\\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)+\$"
+        ).toRegex()
     return matches(emailRegex)
 }
 
@@ -77,6 +79,8 @@ object AnString {
                 else -> ""
             }
         }
+
+        if (source.isEmpty()) return example
 
         val output = loopForString(example.length) {
             val rndIndex = source.length.random

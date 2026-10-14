@@ -1,4 +1,4 @@
 package com.ckgin.anhance
 
-val Long.safeToDivide get() = if (this > 0L) this else 1L
-infix fun Long.safeDiv(divider: Long) =  this.safeToDivide / divider
+val Long.safeDivider get() = if (this == 0L) 1L else this
+infix fun Long.safeDiv(divider: Long) = this / divider.safeDivider

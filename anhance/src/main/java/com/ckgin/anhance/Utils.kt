@@ -36,11 +36,14 @@ fun String.toColorInt(): Int {
         return Color.WHITE
     }
 
-    return when (length) {
-        4, 7, 9 -> Color.parseColor(this)
-        else -> {
-            Log.e("toColorInt", "Error : '$this' is not a hex string")
-            Color.WHITE
+    return try {
+        val hex = when (length) {
+            4, 5 -> "#" + drop(1).flatMap { listOf(it, it) }.joinToString("")
+            7, 9 -> this
+            else -> return Color.WHITE
         }
+        Color.parseColor(hex)
+    } catch (_: IllegalArgumentException) {
+        Color.WHITE
     }
 }

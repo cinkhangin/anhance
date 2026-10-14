@@ -37,24 +37,35 @@ object TextReader {
 
     private var speechRate = 1.0f
     private var error: String? = null
+    private var generation = 0L
 
     fun read(text: String, onError: (String) -> Unit = {}) {
         read(text, speechRate, onError)
     }
 
     fun read(text: String, speechRate: Float, onError: (String) -> Unit = {}) {
-        error?.let { onError(it) } ?: kotlin.run {
-            textToSpeech?.setSpeechRate(speechRate)
-            textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts")
+        val reader = textToSpeech
+        val failure = error
+        if (failure != null) {
+            onError(failure)
+        } else if (!isInitialized.value || reader == null) {
+            onError("Text-to-Speech is not initialized")
+        } else if (reader.setSpeechRate(speechRate) == TextToSpeech.ERROR ||
+            reader.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts") == TextToSpeech.ERROR
+        ) {
+            onError("Cannot read text")
         }
     }
 
     fun initialize(context: Context, speechRate: Float = 1.0f) {
-        textToSpeech?.let {
-            return
-        }
+        if (textToSpeech != null && error == null) return
+        if (textToSpeech != null) destroy()
+        val token = ++generation
+        error = null
+        utteranceProgress.value = STATE_INITIALIZE
 
         val speechListener = TextToSpeech.OnInitListener {
+            if (token != generation) return@OnInitListener
             if (it == TextToSpeech.SUCCESS) {
                 textToSpeech?.language = Locale.US
 
@@ -71,15 +82,16 @@ object TextReader {
 
                 val utteranceListener = object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String?) {
-                        utteranceProgress.value = STATE_READING
+                        if (token == generation) utteranceProgress.value = STATE_READING
                     }
 
                     override fun onDone(utteranceId: String?) {
-                        utteranceProgress.value = STATE_DONE
+                        if (token == generation) utteranceProgress.value = STATE_DONE
                     }
 
                     @Deprecated("Deprecated in Java")
                     override fun onError(utteranceId: String?) {
+                        if (token == generation) utteranceProgress.value = STATE_IDLE
                     }
                 }
 
@@ -92,7 +104,7 @@ object TextReader {
                 error = "Text-to-Speech is not available"
             }
         }
-        textToSpeech = TextToSpeech(context, speechListener)
+        textToSpeech = TextToSpeech(context.applicationContext, speechListener)
     }
 
     fun check(context: Context) {
@@ -102,13 +114,17 @@ object TextReader {
     }
 
     fun destroy() {
+        generation++
         textToSpeech?.shutdown()
         textToSpeech = null
         isInitialized.value = false
+        utteranceProgress.value = STATE_INITIALIZE
+        error = null
     }
 
     fun stop() {
         textToSpeech?.stop()
+        utteranceProgress.value = STATE_IDLE
     }
 
     fun reset() {

@@ -39,30 +39,38 @@ fun Context.readAsset(filename: String): AssetFileDescriptor? {
 }
 
 fun Context.readAssetFd(filename: String, action: (Result<AssetFileDescriptor>) -> Unit) {
-    try {
-        action(Result.success(assets.openFd(filename)))
+    val result = try {
+        Result.success(assets.openFd(filename))
     } catch (exception: IOException) {
-        exception.printStackTrace()
-        action(Result.failure(exception))
+        Result.failure(exception)
     }
+    action(result)
 }
 
 fun Context.assetFilePath(assetName: String): String {
-    val file = File(filesDir, assetName)
+    var temporary: File? = null
     return try {
-        assets.open(assetName).use { ins ->
-            FileOutputStream(file).use { os ->
-                val buffer = ByteArray(4 * 1024)
-                var read: Int
-                while (ins.read(buffer).also { read = it } != -1) {
-                    os.write(buffer, 0, read)
-                }
-                os.flush()
-            }
-            return file.absolutePath
+        val root = filesDir.canonicalFile
+        val file = File(root, assetName).canonicalFile
+        if (!file.path.startsWith(root.path + File.separator)) {
+            throw IOException("Asset path must stay inside filesDir")
         }
-    } catch (e: IOException) {
-        e.printStackTrace()
+        val parent = file.parentFile ?: throw IOException("Missing asset directory")
+        if (!parent.isDirectory && !parent.mkdirs()) {
+            throw IOException("Cannot create asset directory")
+        }
+        assets.open(assetName).use { ins ->
+            val copy = File.createTempFile("asset", ".tmp", parent)
+            temporary = copy
+            FileOutputStream(copy).use { os ->
+                ins.copyTo(os)
+            }
+            if (!copy.renameTo(file)) throw IOException("Cannot replace asset file")
+        }
+        file.absolutePath
+    } catch (_: IOException) {
         ""
+    } finally {
+        temporary?.delete()
     }
 }
